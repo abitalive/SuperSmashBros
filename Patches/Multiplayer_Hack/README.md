@@ -1,17 +1,19 @@
 # Super Smash Bros. Multiplayer ROM Hack
-Super Smash Bros. ROM hack for casual multiplayer
+Super Smash Bros. ROM hack for multiplayer
 
 ## Features
-- All Computers Are Level 9 By Default
-- Boot to Character Selection Screen
-- Default Settings (Stock, 5 Stock/5 Minutes)
-- Disable Character Selection Screen Timeout (Versus)
-- Disable Original C Button Behavior on Stage Selection Screen
-- Disable Original Stage Select Option Behavior
-- Extra Stages (Meta Crystal, Battlefield, Final Destination)
-- Final Destination Fixes
-- Planet Zebes No Acid
-- Random All Players (Togglable through Stage Select Option)
-- Random CPU
-- Random Stage Fixes
-- Unlock Everything
+Always show full results screen
+Boot to character selection screen
+Default versus settings (5 stock, 8 minutes)
+Everything unlocked
+Extra costumes (team)
+Extra versus stages (Meta Crystal, Battlefield, Final Destination)
+Full results screen shown in stock mode
+Music disabled (optional)
+Quick reset button combo (usable any time, skips the results screen)
+Timed stock battles
+Timeout to title screen disabled
+Dreamland no wind
+Hyrule Castle no tornadoes
+Planet Zebes acid always down
+Sector Z Arwing doesn't shoot
