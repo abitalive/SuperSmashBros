@@ -445,7 +445,7 @@ scope TimedStockScore: {
     j 0x801373CC
     nop
   TimeNoKo: // If mode == stock and timer == 0
-    lui t0, 0x8013
+    lui t0, 0xA013
     ori t1, r0, 0x7025 // or t6, r0, r0
     sw t1, 0x6C1C (t0) // Don't load KOs
   Time:
