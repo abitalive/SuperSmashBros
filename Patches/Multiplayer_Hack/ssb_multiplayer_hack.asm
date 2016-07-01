@@ -168,6 +168,11 @@ origin 0x156564
 base 0x801373C4
 j TimedStockScore // Show correct places
 
+// Allow start immediately on CSS
+origin 0x138CF0
+base 0x8013AA70
+nop
+
 // DMA
 origin 0x001234
 base 0x80000634
