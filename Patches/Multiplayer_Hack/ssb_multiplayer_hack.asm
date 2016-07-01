@@ -433,7 +433,7 @@ scope ExtraCostumes: {
 }
 
 // Timed stock
-TimedStockScore: {
+scope TimedStockScore: {
   ori t0, r0, 0x01
   beq t6, t0, Time
   nop
