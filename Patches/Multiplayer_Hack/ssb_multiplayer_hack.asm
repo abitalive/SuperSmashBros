@@ -10,11 +10,6 @@ include "..\LIB\macros.inc"
 origin 0x0
 insert "..\LIB\Super Smash Bros. (U) [!].z64"
 
-// Disable music
-origin 0x0216FC
-base 0x80020AFC
-//nop
-
 // Unlock everything
 origin 0x042B3B
 base 0x800A3DEB
@@ -88,7 +83,7 @@ origin 0x14F748
 base 0x80133BD8
 addiu a0, r0, 0x0C // Range
 
-// Final Destination versus fixes
+// Final Destination versus and training fixes
 origin 0x080414
 base 0x80104C14
 jal FinalDestination
@@ -98,27 +93,23 @@ base 0x80020AF8
 j FinalDestinationMusic
 nop
 
-// Disable original C button behavior on stage selection screen
-origin 0x14FAB0
-base 0x80133F40
-ori a0, r0, 0x0800 // Up
+// Extra versus and training stages
+origin 0x0803DC
+base 0x80104BDC
+j ExtraStagesTraining
+nop
 
-origin 0x14FB84
-base 0x80134014
-ori a0, r0, 0x0400 // Down
+origin 0x14F784
+base 0x80133C14
+jal ExtraStagesSwap
 
-origin 0x14FC54
-base 0x801340E4
-ori a0, r0, 0x0220 // Left
+origin 0x14FA40
+base 0x80133ED0
+jal ExtraStagesToggle
 
-origin 0x14FD58
-base 0x801341E8
-ori a0, r0, 0x0110 // Right
-
-// Extra versus stages
-origin 0x10B0B8
-base 0x8018E1C8
-jal ExtraStages
+origin 0x14FF9C
+base 0x8013442C
+jal ExtraStagesVisual
 
 // Quick reset
 origin 0x109FB8
@@ -178,23 +169,27 @@ origin 0x146DCC
 base 0x801377EC
 nop
 
-// DMA
+// Initialize
 origin 0x001234
 base 0x80000634
-jal DMA
+jal Initialize
 
 origin 0x33204
 base 0x80032604
-scope DMA: {
+scope Initialize: {
   addiu sp, -0x18
   sw ra, 0x14 (sp)
   jal 0x80002CA0 // Original instruction (DMA Copy)
   nop
-  li a0, 0x00F5F4E0 // Source
-  la a1, 0x80400000 // Destination
-  li a2, 0x000A0B20 // Size
-  jal 0x80002CA0 // DMA Copy
-  nop
+  DMA:
+    li a0, 0x00F5F4E0 // Source
+    la a1, 0x80400000 // Destination
+    li a2, 0x000A0B20 // Size
+    jal 0x80002CA0 // DMA Copy
+    nop
+  ExtraStages:
+    lui t0, 0x8050
+    sb r0, 0 (t0)
   lw ra, 0x14 (sp)
   jr ra
   addiu sp, 0x18
@@ -219,58 +214,137 @@ scope DefaultVersus: {
    lw t5, 0 (t1) // Original instruction
 }
 
-// Extra Stages
-// C Up: Meta Crystal
-// C Right: Battlefield
-// C Down: Final Destination
-scope ExtraStages: {
-  la t2, 0x8009EFA4
-  Input:
-    lhu t3, 0 (t2) // Get input
-    ori t4, 0xFFFF
-    beq t3, t4, Loop // If controller connected
-    nop
-    C_Up:
-      ori t4, r0, 0x08
-      and t5, t3, t4
-      bne t4, t5, C_Right // If input == C Up
-      nop
-      ori t9, r0, 0x0D // Return Meta Crystal
-    C_Right:
-      ori t4, r0, 0x01
-      and t5, t3, t4
-      bne t4, t5, C_Down // If input == C Right
-      nop
-      ori t9, r0, 0x0E // Return Battlefield
-    C_Down:
-      ori t4, r0, 0x04
-      and t5, t3, t4
-      bne t4, t5, Loop // If input == C Down
-      nop
-      ori t9, r0, 0x10 // Return Final Destination
-    Loop:
-      addiu t2, 0x08
-      la t3, 0x8009EFC4
-      beq t2, t3, End
-      nop
-      b Input
-      nop
+// Extra versus stages
+scope ExtraStagesTraining: {
+  lui t6, 0x800A // Original instructions
+  lb t6, 0x4AD0 (t6)
+  ori t0, r0, 0x36
+  bne t6, t0, End // If mode == training
+  nop
+  lui t0, 0x800A
+  lb t0, 0x4ADF (t0)
+  ori t1, r0, 0x0D
+  beq t0, t1, VersusBackground // If stage == Meta Crystal
+  nop
+  ori t1, r0, 0x0E
+  beq t0, t1, VersusBackground // Or if stage == Battlefield
+  nop
+  ori t1, r0, 0x10
+  beq t0, t1, VersusBackground // Or if stage == Final Destination
+  nop
+  b End
+  nop
+  VersusBackground:
+    ori t6, r0, 0x16 // Return versus background
   End:
-    jr ra
-    sb t9, 0x0001 (t0) // Original instruction
+    j 0x80104BE4
+    nop
 }
 
-// Final Destination versus fixes
+scope ExtraStagesSwap: {
+  lui t0, 0x8050
+  lb t0, 0 (t0)
+  beq t0, r0, End // If extra stages enabled
+  nop
+  beq v0, r0, Peaches
+  nop
+  ori t0, r0, 0x02
+  beq v0, t0, Congo
+  nop
+  ori t0, r0, 0x04
+  beq v0, t0, Hyrule
+  nop
+  b End
+  nop
+  Peaches: // If stage == Peaches Castle
+    ori v0, r0, 0x0D // Swap with Meta Crystal
+    b End
+    nop
+  Congo: // If stage == Congo Jungle
+    ori v0, r0, 0x0E // Swap with Battlefield
+    b End
+    nop
+  Hyrule: // If stage == Hyrule Castle
+    ori v0, r0, 0x10 // Swap with Final Destination
+  End:
+    jr ra
+    sb v0, 0x000F (s1) // Original instruction
+}
+
+scope ExtraStagesToggle: {
+  addiu sp, -0x18
+  sw ra, 0x14 (sp)
+  jal 0x8039076C // Original instruction
+  nop
+  bnez v0, End // Skip if B pushed
+  nop
+  jal 0x8039076C
+  ori a0, r0, 0x2000
+  beq v0, r0, End // If Z pushed
+  nop
+  Toggle:
+    lui t0, 0xA013
+    sw r0, 0x3F08 (t0) // NOP instructions which change screen
+    sw r0, 0x3F10 (t0)
+    sw r0, 0x3F1C (t0)
+    sw r0, 0x3F20 (t0)
+    lui t0, 0x8050
+    lb t1, 0 (t0)
+    bnez t1, Disable // If extra stages disabled
+    Enable:
+      ori t1, r0, 0x01
+      sb t1, 0 (t0) // Store enabled flag
+      b End
+      nop
+    Disable:
+      sb r0, 0 (t0) // Else store disabled flag
+  End:
+    lw ra, 0x14 (sp)
+    jr ra
+    addiu sp, 0x18
+}
+
+scope ExtraStagesVisual: {
+  lui t0, 0x8050
+  lb t0, 0 (t0)
+  beq t0, r0, End // If extra stages enabled
+  nop
+  lui t0, 0x8013
+  Pictures:
+    sw r0, 0x466C (t0)
+    sw r0, 0x4674 (t0)
+    sw r0, 0x467C (t0)
+  Previews:
+    ori t1, r0, 0x010D // Meta Crystal
+    sw t1, 0x44E4 (t0)
+    ori t1, r0, 0x010C // Battlefield
+    sw t1, 0x44F4 (t0)
+    lui t1, 0x3000
+    sw t1, 0x4868 (t0) // Final Destination
+  End:
+    j 0x80132528
+    nop
+}
+
+// Final Destination versus and training fixes
 scope FinalDestination: {
   lbu v0, 0x01 (t7) // Original instruction
-  ori t0, r0, 0x16
-  lb t1, -0x0238 (t7)
-  bne t0, t1, End // If mode == Versus
+  lui t0, 0x800A
+  lb t1, 0x4AD0 (t0)
+  ori t2, r0, 0x16
+  beq t1, t2, TrainingVersus // If mode == versus
   nop
-  ori t0, r0, 0x10
-  bne t0, v0, End // And level == Final Destination
+  ori t2, r0, 0x36
+  beq t1, t2, TrainingVersus // Or mode == training
   nop
-  ori v0, r0, 0x0E // Return Battlefield index
+  b End
+  nop
+  TrainingVersus:
+    lb t1, 0x4ADF (t0)
+    ori t2, r0, 0x10
+    bne t1, t2, End // If level == Final Destination
+    nop
+    ori v0, r0, 0x0E // Return Battlefield index
   End:
    jr ra
    nop
@@ -280,18 +354,22 @@ scope FinalDestinationMusic: {
   lui t0, 0x800A
   lb t1, 0x4AD0 (t0)
   ori t2, r0, 0x16
-  bne t1, t2, End // If mode == Versus
+  beq t1, t2, TrainingVersus // If mode == versus
   nop
-  lb t1, 0x4D09 (t0)
-  ori t2, r0, 0x10
-  bne t1, t2, End // And level == Final Destination
+  ori t2, r0, 0x36
+  beq t1, t2, TrainingVersus // Or mode == training
   nop
-  ori a1, r0, 0x19 // Return Master Hand music
   b End
   nop
+  TrainingVersus:
+    lb t1, 0x4ADF (t0)
+    ori t2, r0, 0x10
+    bne t1, t2, End // If level == Final Destination
+    nop
+    ori a1, r0, 0x19 // Return Master Hand music
   End:
     jr ra
-    sw a1, 0 (t3) // Original instruction
+    sw a1, 0 (t3) // Original instruction (comment to disable music)
 }
 
 // Quick Reset

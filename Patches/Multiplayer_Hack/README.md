@@ -8,7 +8,7 @@ Super Smash Bros. ROM hack for multiplayer
 - Default versus settings (5 stock, 8 minutes)
 - Everything unlocked
 - Extra FFA costumes (team)
-- Extra versus stages (Meta Crystal, Battlefield, Final Destination)
+- Extra versus and training stages toggle (Meta Crystal, Battlefield, Final Destination)
 - Full results screen shown in stock mode
 - Music disabled (optional)
 - Quick reset button combo (usable any time, skips the results screen)
