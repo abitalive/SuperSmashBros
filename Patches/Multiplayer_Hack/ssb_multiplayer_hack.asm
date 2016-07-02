@@ -349,7 +349,12 @@ scope ExtraCostumes: {
   Red:
     lw t0, 0x24 (sp)
     lhu t1, 0 (t0)
-    ori t2, r0, 0x2008 // Z + C Up
+    ori t2, r0, 0x2000 // Z
+    and t3, t1, t2
+    bne t2, t3, Blue
+    nop
+    lhu t1, 0x02 (t0)
+    ori t2, r0, 0x0008 // C Up
     and t3, t1, t2
     bne t2, t3, Blue
     nop
@@ -370,7 +375,12 @@ scope ExtraCostumes: {
   Blue:
     lw t0, 0x24 (sp)
     lhu t1, 0 (t0)
-    ori t2, r0, 0x2001 // Z + C Right
+    ori t2, r0, 0x2000 // Z
+    and t3, t1, t2
+    bne t2, t3, Green
+    nop
+    lhu t1, 0x02 (t0)
+    ori t2, r0, 0x0001 // C Right
     and t3, t1, t2
     bne t2, t3, Green
     nop
@@ -391,7 +401,12 @@ scope ExtraCostumes: {
   Green:
     lw t0, 0x24 (sp)
     lhu t1, 0 (t0)
-    ori t2, r0, 0x2004 // Z + C Down
+    ori t2, r0, 0x2000 // Z
+    and t3, t1, t2
+    bne t2, t3, Extra
+    nop
+    lhu t1, 0x02 (t0)
+    ori t2, r0, 0x0004 // C Down
     and t3, t1, t2
     bne t2, t3, Extra
     nop
@@ -412,7 +427,12 @@ scope ExtraCostumes: {
   Extra:
     lw t0, 0x24 (sp)
     lhu t1, 0 (t0)
-    ori t2, r0, 0x2002 // Z + C Left
+    ori t2, r0, 0x2000 // Z
+    and t3, t1, t2
+    bne t2, t3, End
+    nop
+    lhu t1, 0x02 (t0)
+    ori t2, r0, 0x0002 // C Left
     and t3, t1, t2
     bne t2, t3, End
     nop
