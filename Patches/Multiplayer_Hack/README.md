@@ -2,7 +2,7 @@
 Super Smash Bros. ROM hack for multiplayer
 
 ## Features
-- Allow start immediately on CSS
+- Allow start immediately on versus CSS
 - Always show full results screen
 - Boot to character selection screen
 - Default versus settings (5 stock, 8 minutes)

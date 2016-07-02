@@ -168,7 +168,7 @@ origin 0x156564
 base 0x801373C4
 j TimedStockScore // Show correct places
 
-// Allow start immediately on CSS
+// Allow start immediately on versus CSS
 origin 0x138CF0
 base 0x8013AA70
 nop
