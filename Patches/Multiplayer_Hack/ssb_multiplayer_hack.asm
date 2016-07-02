@@ -25,6 +25,10 @@ origin 0x11D5B0
 base 0x80132620
 b 0x80132640 // MSS
 
+origin 0x11EB1C
+base 0x80132A0C
+b 0x80132A2C // 1PMS
+
 origin 0x1245A0
 base 0x80133BF0
 b 0x80133C18 // VMS
@@ -35,7 +39,11 @@ b 0x80133AD4 // VOS
 
 origin 0x138BDC
 base 0x8013A95C
-b 0x8013A984 // CSS
+b 0x8013A984 // VCSS
+
+origin 0x146D08
+base 0x80137728
+b 0x80137758 // TCSS
 
 origin 0x14F928
 base 0x80133DB8
