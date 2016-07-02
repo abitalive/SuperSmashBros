@@ -136,7 +136,7 @@ origin 0x15688C
 base 0x801376EC
 nop
 
-// Extra costumes
+// Extra FFA costumes
 origin 0x1368C8
 base 0x80138648
 j ExtraCostumes
@@ -345,7 +345,7 @@ scope SkipResults: {
    sb t0, 0 (v0)
 }
 
-// Extra costumes
+// Extra FFA costumes
 // Z + C Up: Red team
 // Z + C Right: Blue team
 // Z + C Down: Green team

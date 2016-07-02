@@ -2,12 +2,12 @@
 Super Smash Bros. ROM hack for multiplayer
 
 ## Features
-- Allow start immediately on versus CSS
+- Allow start immediately on versus and training CSS
 - Always show full results screen
 - Boot to character selection screen
 - Default versus settings (5 stock, 8 minutes)
 - Everything unlocked
-- Extra costumes (team)
+- Extra FFA costumes (team)
 - Extra versus stages (Meta Crystal, Battlefield, Final Destination)
 - Full results screen shown in stock mode
 - Music disabled (optional)
