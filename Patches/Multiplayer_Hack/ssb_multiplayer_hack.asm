@@ -177,6 +177,11 @@ origin 0x146DCC
 base 0x801377EC
 nop
 
+// Allow skipping results screen immediately
+origin 0x150FD4
+base 0x80131E34
+nop
+
 // Initialize
 origin 0x001234
 base 0x80000634

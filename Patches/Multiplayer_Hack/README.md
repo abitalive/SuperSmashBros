@@ -2,6 +2,7 @@
 Super Smash Bros. ROM hack for multiplayer
 
 ## Features
+- Allow skipping results screen immediately
 - Allow start immediately on versus and training CSS
 - Always show full results screen
 - Boot to character selection screen
