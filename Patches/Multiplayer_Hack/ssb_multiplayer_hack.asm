@@ -368,11 +368,11 @@ scope ExtraStagesVisual: {
     sw t1, 0x44E4 (t0)
     ori t1, r0, 0x010C // Battlefield
     sw t1, 0x44F4 (t0)
-    ori t1, r0, 0x010A
-    sw t1, 0x4504 (t0) // Final Destination
+    ori t1, r0, 0x010A // Final Destination
+    sw t1, 0x4504 (t0)
     sw r0, 0x4508 (t0)
-    lui t1, 0x3F00
-    sw t1, 0x4868 (t0) // Final Destination (zoom)
+    lui t1, 0x3F00 // Final Destination (zoom)
+    sw t1, 0x4868 (t0)
   End:
     lw ra, 0x14 (sp)
     jr ra
