@@ -115,8 +115,8 @@ origin 0x14FA40
 base 0x80133ED0
 jal ExtraStagesToggle
 
-origin 0x14FF9C
-base 0x8013442C
+origin 0x14FEFC
+base 0x8013438C
 jal ExtraStagesVisual
 
 // Quick reset
@@ -210,6 +210,26 @@ scope Initialize: {
 
 origin 0xF5F4E0
 base 0x80400000
+
+// Word copy
+// a0 = source
+// a1 = destination
+// a2 = size
+// v0 = counter
+// v1 = temp
+scope WCopy: {
+  ori v0, r0, r0
+  Loop:
+    lw v1, 0 (a0)
+    sw v1, 0 (a1)
+    addiu v0, 0x04
+    addiu a0, 0x04
+    bne a2, v0, Loop
+    addiu a1, 0x04
+  End:
+    jr ra
+    nop
+}
 
 // Default versus settings
 scope DefaultVersus: {
@@ -318,16 +338,32 @@ scope ExtraStagesToggle: {
 }
 
 scope ExtraStagesVisual: {
+  addiu sp, -0x18
+  sw ra, 0x14 (sp)
+  jal 0x800CDE04 // Original instruction
+  nop
   lui t0, 0x8050
   lb t0, 0 (t0)
   beq t0, r0, End // If extra stages enabled
   nop
-  lui t0, 0x8013
-  Pictures:
-    sw r0, 0x466C (t0)
-    sw r0, 0x4674 (t0)
-    sw r0, 0x467C (t0)
+  Pictures: // [Jorgasms]
+    MetaCrystal:
+      la a0, ImgMetaCrystal // Source
+      la a1, 0x8015F928 // Destination
+      jal WCopy
+      ori a2, r0, 0x0D80 // Size
+    Battlefield:
+      la a0, ImgBattlefield // Source
+      la a1, 0x801614E8 // Destination
+      jal WCopy
+      ori a2, r0, 0x0D80 // Size
+    FinalDestination:
+      la a0, ImgFinalDestination // Source
+      la a1, 0x801630A8 // Destination
+      jal WCopy
+      ori a2, r0, 0x0D80 // Size
   Previews:
+    lui t0, 0x8013
     ori t1, r0, 0x010D // Meta Crystal
     sw t1, 0x44E4 (t0)
     ori t1, r0, 0x010C // Battlefield
@@ -335,8 +371,9 @@ scope ExtraStagesVisual: {
     lui t1, 0x3000
     sw t1, 0x4868 (t0) // Final Destination
   End:
-    j 0x80132528
-    nop
+    lw ra, 0x14 (sp)
+    jr ra
+    addiu sp, 0x18
 }
 
 // Final Destination versus and training fixes
@@ -573,5 +610,10 @@ scope TimedStockScore: {
     j 0x801373F4
     nop
 }
+
+// Stage pictures
+insert ImgMetaCrystal, "images\meta_crystal.bin"
+insert ImgBattlefield, "images\battlefield.bin"
+insert ImgFinalDestination, "images\final_destination.bin"
 
 fill 0x1000000 - origin() // Zero fill remainder of ROM
