@@ -13,7 +13,7 @@ insert "..\LIB\Super Smash Bros. (U) [!].z64"
 // Unlock everything
 origin 0x042B3B
 base 0x800A3DEB
-dl 0xFF0FF0
+dl 0x7F0C90
 
 // Boot to character selection screen
 origin 0x042CD0
