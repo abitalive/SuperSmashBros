@@ -645,8 +645,8 @@ scope TimedStock: {
 }
 
 // Stage pictures
-insert ImgMetaCrystal, "Images\meta_crystal.bin"
-insert ImgBattlefield, "Images\battlefield.bin"
-insert ImgFinalDestination, "Images\final_destination.bin"
+insert ImgMetaCrystal, "Images\meta_crystal.rgba"
+insert ImgBattlefield, "Images\battlefield.rgba"
+insert ImgFinalDestination, "Images\final_destination.rgba"
 
 fill 0x1000000 - origin() // Zero fill remainder of ROM
