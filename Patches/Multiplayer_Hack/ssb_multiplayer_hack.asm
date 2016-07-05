@@ -607,11 +607,11 @@ scope TimeScoring: {
   Stock:
     ori t6, r0, 0x74
     multu a0, t6
-    mflo t6
     lui t7, 0x800A
+    mflo t6
     addu t7, t6
     lb v0, 0x4D33 (t7) // Points = stocks
-    addiu v0, 0x01
+    addiu v0, 0x01 // Add 1 to get real stocks number
     b End
     nop
   Time: // Else
