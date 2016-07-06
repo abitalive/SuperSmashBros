@@ -604,11 +604,14 @@ scope TimeScoring: {
   lb t6, 0x4D0B (t6)
   ori t7, 0x01
   beq t6, t7, Time // If mode == stock
+  nop
   Stock:
-    ori t6, r0, 0x74
-    multu a0, t6
+    sll t6, a0, 0x07
+    sll t7, a0, 0x03
+    subu t6, t7
+    sll t7, a0, 0x02
+    subu t6, t7
     lui t7, 0x800A
-    mflo t6
     addu t7, t6
     lb v0, 0x4D33 (t7) // Points = stocks
     addiu v0, 0x01 // Add 1 to get real stocks number
