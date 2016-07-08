@@ -260,10 +260,8 @@ scope ExtraStagesTraining: {
   lb t0, 0x4ADF (t0)
   ori t1, r0, 0x0D
   beq t0, t1, VersusBackground // If stage == Meta Crystal
-  nop
   ori t1, r0, 0x0E
   beq t0, t1, VersusBackground // Or if stage == Battlefield
-  nop
   ori t1, r0, 0x10
   beq t0, t1, VersusBackground // Or if stage == Final Destination
   nop
@@ -282,10 +280,8 @@ scope ExtraStagesSwap: {
   beq t0, r0, End // If extra stages enabled
   nop
   beq v0, r0, Peaches
-  nop
   ori t0, r0, 0x02
   beq v0, t0, Congo
-  nop
   ori t0, r0, 0x04
   beq v0, t0, Hyrule
   nop
@@ -388,7 +384,6 @@ scope FinalDestination: {
   lb t1, 0x4AD0 (t0)
   ori t2, r0, 0x16
   beq t1, t2, TrainingVersus // If mode == versus
-  nop
   ori t2, r0, 0x36
   beq t1, t2, TrainingVersus // Or mode == training
   nop
@@ -410,7 +405,6 @@ scope FinalDestinationMusic: {
   lb t1, 0x4AD0 (t0)
   ori t2, r0, 0x16
   beq t1, t2, TrainingVersus // If mode == versus
-  nop
   ori t2, r0, 0x36
   beq t1, t2, TrainingVersus // Or mode == training
   nop
@@ -435,15 +429,12 @@ scope QuickReset: {
     Player1:
       lhu t2, 0xEFA4 (t0)
       beq t1, t2, Reset // If player 1 input == A, B, Z, R, Start
-      nop
     Player2:
       lhu t2, 0xEFAC (t0)
       beq t1, t2, Reset // Or player 2 input == A, B, Z, R, Start
-      nop
     Player3:
       lhu t2, 0xEFB4 (t0)
       beq t1, t2, Reset // Or player 3 input == A, B, Z, R, Start
-      nop
     Player4:
       lhu t2, 0xEFBC (t0)
       beq t1, t2, Reset // Or player 4 input == A, B, Z, R, Start
