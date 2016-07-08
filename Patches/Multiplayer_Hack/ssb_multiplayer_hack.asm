@@ -220,20 +220,17 @@ base 0x80400000
 // a0 = source
 // a1 = destination
 // a2 = size
-// v0 = counter
-// v1 = temp
+// v0 = temp
 scope WCopy: {
-  ori v0, r0, r0
-  Loop:
-    lw v1, 0 (a0)
-    sw v1, 0 (a1)
-    addiu v0, 0x04
-    addiu a0, 0x04
-    bne a2, v0, Loop
-    addiu a1, 0x04
-  End:
-    jr ra
-    nop
+  lw v0, 0 (a0)
+  addiu a2, -0x04
+  sw v0, 0 (a1)
+  addiu a0, 0x04
+  bnez a2, WCopy
+  addiu a1, 0x04
+End:
+  jr ra
+  nop
 }
 
 // Default versus settings
