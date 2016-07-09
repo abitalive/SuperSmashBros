@@ -245,15 +245,15 @@ scope RandomStages: {
   Random:
     jal 0x80018A30 // Random
     ori a0, r0, 0x11 // Range = 0x00-0x10
-    ori t0, r0, 0x09 // If return value == 09
+    ori t0, r0, 0x09 // If return value == 0x09
     beq v0, t0, Random
-    ori t0, r0, 0x0A // Or return value == 0A
+    ori t0, r0, 0x0A // Or return value == 0x0A
     beq v0, t0, Random
-    ori t0, r0, 0x0B // Or return value == 0B
+    ori t0, r0, 0x0B // Or return value == 0x0B
     beq v0, t0, Random
-    ori t0, r0, 0x0C // Or return value == 0C
+    ori t0, r0, 0x0C // Or return value == 0x0C
     beq v0, t0, Random
-    ori t0, r0, 0x0F // Or return value == 0F
+    ori t0, r0, 0x0F // Or return value == 0x0F
     beq v0, t0, Random // Generate another random stage
     nop
     b End
