@@ -75,21 +75,10 @@ base 0x8010A3D8
 nop
 
 // Random stage fixes
-origin 0x0A7D6B
-base 0x800A716B
-db 0x0D // Meta Crystal
-
-origin 0x0A7D73
-base 0x800A7173
-db 0x0C // Battlefield
-
-origin 0x0A7D7B
-base 0x800A717B
-db 0x0A // Final Destination
-
-origin 0x14F748
-base 0x80133BD8
-addiu a0, r0, 0x0C // Range
+origin 0x14F744
+base 0x80133BD4
+jal RandomStages
+nop
 
 // Final Destination versus and training fixes
 origin 0x080414
@@ -247,6 +236,35 @@ scope DefaultVersus: {
    sb t5, 0x4E84 (t6)
    jr ra
    lw t5, 0 (t1) // Original instruction
+}
+
+// Random stage fixes
+scope RandomStages: {
+  addiu sp, -0x18
+  sw ra, 0x14 (sp)
+  jal 0x80018A30 // Original instruction (Random)
+  ori a0, r0, 0x0C // Range
+  ori t0, r0, 0x09
+  beq v0, t0, MetaCrystal
+  ori t0, r0, 0x0A
+  beq v0, t0, Battlefield
+  ori t0, r0, 0x0B
+  beq v0, t0, FinalDestination
+  nop
+  MetaCrystal: // If stage == 0x09
+    ori v0, r0, 0x0D // Swap with Meta Crystal
+    b End
+    nop
+  Battlefield: // If stage == 0x0A
+    ori v0, r0, 0x0E // Swap with Battlefield
+    b End
+    nop
+  FinalDestination: // If stage == 0x0B
+    ori v0, r0, 0x10 // Swap with Final Destination
+  End:
+  lw ra, 0x14 (sp)
+  jr ra
+  addiu sp, 0x18
 }
 
 // Extra versus stages
