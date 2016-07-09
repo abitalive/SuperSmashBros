@@ -251,6 +251,8 @@ scope RandomStages: {
   ori t0, r0, 0x0B
   beq v0, t0, FinalDestination
   nop
+  b End
+  nop
   MetaCrystal: // If stage == 0x09
     ori v0, r0, 0x0D // Swap with Meta Crystal
     b End
