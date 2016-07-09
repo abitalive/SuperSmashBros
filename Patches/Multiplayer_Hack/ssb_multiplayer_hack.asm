@@ -242,31 +242,26 @@ scope DefaultVersus: {
 scope RandomStages: {
   addiu sp, -0x18
   sw ra, 0x14 (sp)
-  jal 0x80018A30 // Original instruction (Random)
-  ori a0, r0, 0x0C // Range
-  ori t0, r0, 0x09
-  beq v0, t0, MetaCrystal
-  ori t0, r0, 0x0A
-  beq v0, t0, Battlefield
-  ori t0, r0, 0x0B
-  beq v0, t0, FinalDestination
-  nop
-  b End
-  nop
-  MetaCrystal: // If stage == 0x09
-    ori v0, r0, 0x0D // Swap with Meta Crystal
+  Random:
+    jal 0x80018A30 // Random
+    ori a0, r0, 0x11 // Range = 0x00-0x10
+    ori t0, r0, 0x09 // If return value == 09
+    beq v0, t0, Random
+    ori t0, r0, 0x0A // Or return value == 0A
+    beq v0, t0, Random
+    ori t0, r0, 0x0B // Or return value == 0B
+    beq v0, t0, Random
+    ori t0, r0, 0x0C // Or return value == 0C
+    beq v0, t0, Random
+    ori t0, r0, 0x0F // Or return value == 0F
+    beq v0, t0, Random // Generate another random stage
+    nop
     b End
     nop
-  Battlefield: // If stage == 0x0A
-    ori v0, r0, 0x0E // Swap with Battlefield
-    b End
-    nop
-  FinalDestination: // If stage == 0x0B
-    ori v0, r0, 0x10 // Swap with Final Destination
   End:
-  lw ra, 0x14 (sp)
-  jr ra
-  addiu sp, 0x18
+    lw ra, 0x14 (sp)
+    jr ra
+    addiu sp, 0x18
 }
 
 // Extra versus stages
