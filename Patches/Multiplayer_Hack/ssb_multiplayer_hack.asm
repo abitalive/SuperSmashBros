@@ -183,6 +183,13 @@ origin 0x150FD4
 base 0x80131E34
 nop
 
+// Neutral Spawns
+origin 0x07679C
+base 0x800FAF9C
+j NeutralSpawns
+nop
+NeutralSpawns_Return:
+
 // Initialize
 origin 0x001234
 base 0x80000634
@@ -656,6 +663,64 @@ scope TimedStock: {
     j 0x801373F4
     nop
 }
+
+// Neutral spawns
+scope NeutralSpawns: {
+  lui t0, 0x800A
+  lbu t0, 0x4AD0 (t0)
+  ori t1, r0, 0x16
+  bne t0, t1, End // If mode == versus
+  lui t0, 0x8013
+  lw t0, 0x17F4 (t0)
+  ori t1, r0, 0x01
+  bne t0, t1, End // And players == 2
+  nop
+  la t2, 0x800A4D2A // Pointer to player active flag
+  or t3, r0, r0 // Player counter
+  addiu t4, r0, -0x01 // Loop counter
+  Loop1:
+    lbu t5, 0 (t2)
+    ori t6, r0, 0x02
+    beq t5, t6, IncLoop // If player active
+    nop
+    addiu t3, 0x01 // Increment player counter
+    IncLoop:
+      addiu t4, 0x01 // Increment loop counter
+    beq a0, t4, Lookup // Break if player == loop counter
+    nop
+    b Loop1
+    addiu t2, 0x74 // Update pointer for next player
+  Lookup:
+    lui t7, 0x800A
+    lbu t7, 0x4ADF (t7) // Stage
+    la t8, NeutralSpawnsTable // Pointer to lookup table
+    Loop2:
+      lbu t9, 0 (t8) // Lookup stage
+      bnel t7, t9, Loop2 // Break if stage == lookup stage
+      addiu t8, 0x03 // Update pointer for next stage
+    addu t8, t3
+    lbu a0, 0 (t8) // Lookup spawn
+  End:
+   lui a3, 0x8013 // Original instructions
+   j NeutralSpawns_Return
+   lw a3, 0x1380 (a3)
+}
+
+// Neutral spawns table
+NeutralSpawnsTable:
+db 0x00, 0x01, 0x03 // Peach's Castle
+db 0x01, 0x01, 0x03 // Sector Z
+db 0x02, 0x00, 0x03 // Congo Jungle
+db 0x03, 0x00, 0x03 // Planet Zebes
+db 0x04, 0x01, 0x02 // Hyrule Castle
+db 0x05, 0x02, 0x03 // Yoshi's Island
+db 0x06, 0x01, 0x03 // Dream Land
+db 0x07, 0x02, 0x03 // Saffron City
+db 0x08, 0x00, 0x01 // Mushroom Kingdom
+db 0x0D, 0x00, 0x03 // Meta Crystal
+db 0x0E, 0x02, 0x03 // Battlefield
+db 0x10, 0x00, 0x01 // Final Destination
+align(4)
 
 // Stage pictures
 insert ImgMetaCrystal, "Images\meta_crystal.rgba"

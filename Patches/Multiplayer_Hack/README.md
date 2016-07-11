@@ -5,6 +5,7 @@ Super Smash Bros. ROM hack for multiplayer
 - Allow skipping results screen immediately
 - Allow start immediately on versus and training CSS
 - Always show full results screen
+- Automatic 1v1 neutral spawns
 - Boot to character selection screen
 - Default versus settings (5 stock, 8 minutes)
 - Everything unlocked
