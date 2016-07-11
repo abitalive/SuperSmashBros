@@ -15,7 +15,8 @@ Super Smash Bros. ROM hack for multiplayer
 - Quick reset button combo (usable any time, skips the results screen)
 - Timed stock battles
 - Timeout to title screen disabled
-- Dreamland no wind
+- Dream Land no wind
 - Hyrule Castle no tornadoes
 - Planet Zebes acid always down
-- Sector Z Arwing doesn't shoot
+- Saffron City no Pokémon
+- Sector Z Arwing no Arwing

@@ -55,23 +55,30 @@ base 0x800A1B48
 jal DefaultVersus
 
 // Dreamland no wind
-origin 0x081408
-base 0x80105C08
+origin 0x081734
+base 0x80105F34
 nop
 
-// Sector Z Arwing doesn't shoot
-origin 0x0834B8
-base 0x80107CB8
+// Sector Z no Arwing
+origin 0x08364C
+base 0x80107E4C
 nop
 
 // Planet Zebes acid always down
-origin 0x083A5C
-base 0x8010825C
+origin 0x083C10
+base 0x80108410
 nop
 
 // Hyrule Castle no tornadoes
-origin 0x085BD8
-base 0x8010A3D8
+origin 0x086160
+base 0x8010A960
+nop
+
+// Saffron City no Pokemon
+origin 0x086974
+base 0x8010B174
+nop
+nop
 nop
 
 // Random stage fixes
