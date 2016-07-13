@@ -667,39 +667,42 @@ scope TimedStock: {
 // Neutral spawns
 scope NeutralSpawns: {
   lui t0, 0x800A
-  lbu t0, 0x4AD0 (t0)
+  lbu t0, 0x4AD0 (t0) // Mode
   ori t1, r0, 0x16
   bne t0, t1, End // If mode == versus
-  lui t0, 0x8013
-  lw t0, 0x17F4 (t0)
-  ori t1, r0, 0x01
-  bne t0, t1, End // And players == 2
   nop
-  la t2, 0x800A4D2A // Pointer to player active flag
-  or t3, r0, r0 // Player counter
-  addiu t4, r0, -0x01 // Loop counter
-  Loop1:
-    lbu t5, 0 (t2)
-    ori t6, r0, 0x02
-    beq t5, t6, IncLoop // If player active
-    nop
-    addiu t3, 0x01 // Increment player counter
-    IncLoop:
-      addiu t4, 0x01 // Increment loop counter
-    beq a0, t4, Lookup // Break if player == loop counter
-    nop
-    b Loop1
-    addiu t2, 0x74 // Update pointer for next player
+  Count:
+    la t0, 0x800A4D2A // Pointer to player status flag
+    ori t1, r0, 0x02
+    ori t2, r0, 0x03
+    or t3, r0, r0 // Player counter
+    addiu t4, r0, -0x01 // Loop counter
+    Loop0:
+      lbu t5, 0 (t0) // Player status flag
+      beq t5, t1, IncLoop0 // If player active
+      nop
+      addiu t3, 0x01 // Increment player counter
+      IncLoop0:
+        addiu t4, 0x01 // Increment loop counter
+      bne t4, a0, EndLoop0 // If player == loop counter
+      nop
+      or t6, r0, t3 // t6 = player counter
+      EndLoop0:
+        bne t4, t2, Loop0 // Break if loop counter == 3
+        addiu t0, 0x74 // Update pointer for next player
+  ori t0, r0, 0x02
+  bne t3, t0, End // If players == 2
+  nop
   Lookup:
-    lui t7, 0x800A
-    lbu t7, 0x4ADF (t7) // Stage
-    la t8, NeutralSpawnsTable // Pointer to lookup table
-    Loop2:
-      lbu t9, 0 (t8) // Lookup stage
-      bnel t7, t9, Loop2 // Break if stage == lookup stage
-      addiu t8, 0x03 // Update pointer for next stage
-    addu t8, t3
-    lbu a0, 0 (t8) // Lookup spawn
+    lui t0, 0x800A
+    lbu t0, 0x4ADF (t0) // Stage
+    la t1, NeutralSpawnsTable // Pointer to lookup table
+    Loop1:
+      lbu t2, 0 (t1) // Lookup stage
+      bnel t0, t2, Loop1 // Break if stage == lookup stage
+      addiu t1, 0x03 // Update pointer for next stage
+    addu t1, t6
+    lbu a0, 0 (t1) // Lookup spawn
   End:
    lui a3, 0x8013 // Original instructions
    j NeutralSpawns_Return
