@@ -619,7 +619,7 @@ scope ExtraCostumes: {
 scope TimeScoring: {
   lui t6, 0x800A
   lb t6, 0x4D0B (t6)
-  ori t7, 0x01
+  ori t7, r0, 0x01
   beq t6, t7, Time // If mode == stock
   nop
   Stock:
