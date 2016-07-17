@@ -190,6 +190,15 @@ j NeutralSpawns
 nop
 NeutralSpawns_Return:
 
+// Stock handicap
+origin 0x10A390
+base 0x8018D4A0
+jal StockHandicap0 // Handicap behavior
+
+origin 0x10A3A4
+base 0x8018D4B4
+jal StockHandicap1 // Stock count
+
 // Initialize
 origin 0x001234
 base 0x80000634
@@ -707,6 +716,38 @@ scope NeutralSpawns: {
    lui a3, 0x8013 // Original instructions
    j NeutralSpawns_Return
    lw a3, 0x1380 (a3)
+}
+
+// Stock handicap
+scope StockHandicap0: {
+  lui t0, 0x800A
+  lb t0, 0x4D0B (t0)
+  ori t1, r0, 0x01
+  beq t0, t1, End // If mode != time
+  lui t0, 0x800A
+  lb t0, 0x4D10 (t0)
+  beqz t0, End // And handicap enabled
+  nop
+  ori t9, r0, 0x09 // Disable original handicap behavior
+  End:
+    jr ra
+    sb t9, 0x75 (sp) // Original instruction
+}
+
+scope StockHandicap1: {
+  lui t0, 0x800A
+  lb t0, 0x4D0B (t0)
+  ori t1, r0, 0x01
+  beq t0, t1, End // If mode != time
+  lui t0, 0x800A
+  lb t0, 0x4D10 (t0)
+  beqz t0, End // And handicap enabled
+  nop
+  lbu t8, 0x21 (v1) // Stocks = handicap
+  addiu t8, -0x01
+  End:
+    jr ra
+    sb t8, 0x77 (sp) // Original instruction
 }
 
 // Neutral spawns table
