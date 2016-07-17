@@ -10,6 +10,11 @@ include "..\LIB\macros.inc"
 origin 0x0
 insert "..\LIB\Super Smash Bros. (U) [!].z64"
 
+// Disable music
+origin 0x0216FC
+base 0x80020AFC
+//nop
+
 // Unlock everything
 origin 0x042B3B
 base 0x800A3DEB
