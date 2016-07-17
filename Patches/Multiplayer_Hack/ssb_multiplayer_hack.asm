@@ -186,13 +186,43 @@ nop
 NeutralSpawns_Return:
 
 // Stock handicap
-origin 0x10A390
-base 0x8018D4A0
-jal StockHandicap0 // Handicap behavior
+origin 0x10A38C
+base 0x8018D49C
+ori t9, r0, 0x09 // Disable original handicap behavior
 
 origin 0x10A3A4
 base 0x8018D4B4
-jal StockHandicap1 // Stock count
+jal StockHandicap // Stock count
+
+origin 0x156C5C
+base 0x80137ABC
+addiu t3, t3, 0x9BB0 // Use places for auto
+
+origin 0x156CBC
+base 0x80137B1C
+addiu t3, t3, 0x9BB0 // Use places for auto
+
+origin 0x156DA4
+base 0x80137C04
+addiu t3, t3, 0x9BB0 // Use places for auto
+
+origin 0x157370
+base 0x801381D0
+addiu t3, t3, 0x9BB0 // Use places for auto
+
+origin 0x1573D0
+base 0x80138230
+addiu t3, t3, 0x9BB0 // Use places for auto
+
+origin 0x1574B8
+base 0x80138318
+addiu t3, t3, 0x9BB0 // Use places for auto
+
+origin 0x157898
+base 0x801386F8
+lw a1, 0x18 (sp) // Loser
+jal 0x80138548 // Use places for auto
+or a0, v0, r0 // Winner
 
 // Random stage music
 origin 0x06341C
@@ -793,29 +823,10 @@ scope NeutralSpawns: {
 }
 
 // Stock handicap
-scope StockHandicap0: {
-  lui t0, 0x800A
-  lb t0, 0x4D0B (t0)
-  ori t1, r0, 0x01
-  beq t0, t1, End // If mode != time
+scope StockHandicap: {
   lui t0, 0x800A
   lb t0, 0x4D10 (t0)
-  beqz t0, End // And handicap enabled
-  nop
-  ori t9, r0, 0x09 // Disable original handicap behavior
-  End:
-    jr ra
-    sb t9, 0x75 (sp) // Original instruction
-}
-
-scope StockHandicap1: {
-  lui t0, 0x800A
-  lb t0, 0x4D0B (t0)
-  ori t1, r0, 0x01
-  beq t0, t1, End // If mode != time
-  lui t0, 0x800A
-  lb t0, 0x4D10 (t0)
-  beqz t0, End // And handicap enabled
+  beqz t0, End // If handicap enabled
   nop
   lbu t8, 0x21 (v1) // Stocks = handicap
   addiu t8, -0x01
