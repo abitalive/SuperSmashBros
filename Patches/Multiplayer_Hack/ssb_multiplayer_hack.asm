@@ -199,6 +199,15 @@ origin 0x10A3A4
 base 0x8018D4B4
 jal StockHandicap1 // Stock count
 
+// Random stage music
+origin 0x06341C
+base 0x800E7C1C
+jal RandomMusic // Music transition
+
+origin 0x077C08
+base 0x800FC408
+jal RandomMusic // Stage music
+
 // Initialize
 origin 0x001234
 base 0x80000634
@@ -217,9 +226,11 @@ scope Initialize: {
     li a2, 0x000A0B20 // Size
     jal 0x80002CA0 // DMA Copy
     nop
-  ExtraStages:
+  Settings:
     lui t0, 0x8050
-    sb r0, 0 (t0)
+    sb r0, 0 (t0) // Extra versus stages
+    ori t1, 0xFF
+    sb t1, 0x01 (t0) // Random stage music
   lw ra, 0x14 (sp)
   jr ra
   addiu sp, 0x18
@@ -750,6 +761,33 @@ scope StockHandicap1: {
     sb t8, 0x77 (sp) // Original instruction
 }
 
+// Random stage music
+scope RandomMusic: {
+  addiu sp, -0x18
+  sw ra, 0x14 (sp)
+  ori t0, r0, 0x18
+  beq a1, t0, End // If track != 0x18 (Master Hand Appearance)
+  nop
+  la t0, RandomMusicTable
+  Random:
+    jal 0x80018A30 // Random
+    ori a0, r0, RandomMusicTableEnd - RandomMusicTable // Range
+    la a1, RandomMusicTable
+    addu a1, v0
+    lbu a1, 0 (a1) // Lookup track
+    lui t0, 0x8050
+    lbu t1, 0x01 (t0) // Last track
+    beq a1, t1, Random // If lookup track == last track; generate another random track
+    nop
+    sb a1, 0x01 (t0) // Update last track
+  End:
+    jal 0x80020AB4 // Original instructions
+    or a0, r0, r0
+    lw ra, 0x14 (sp)
+    jr ra
+    addiu sp, 0x18
+}
+
 // Neutral spawns table
 NeutralSpawnsTable:
 db 0x00, 0x01, 0x03 // Peach's Castle
@@ -764,6 +802,25 @@ db 0x08, 0x00, 0x01 // Mushroom Kingdom
 db 0x0D, 0x00, 0x03 // Meta Crystal
 db 0x0E, 0x02, 0x03 // Battlefield
 db 0x10, 0x00, 0x01 // Final Destination
+align(4)
+
+// Random stage music table
+RandomMusicTable:
+db 0x00 // Dream Land
+db 0x01 // Planet Zebes
+db 0x02 // Mushroom Kingdom
+db 0x04 // Sector Z
+db 0x05 // Congo Jungle
+db 0x06 // Peach's Castle
+db 0x07 // Saffron City
+db 0x08 // Yoshi's Island
+db 0x09 // Hyrule Castle
+db 0x19 // Final Destination
+db 0x1A // Bonus Stages
+db 0x24 // Battlefield
+db 0x25 // Meta Crystal
+db 0x27 // Credits
+RandomMusicTableEnd:
 align(4)
 
 // Stage pictures
