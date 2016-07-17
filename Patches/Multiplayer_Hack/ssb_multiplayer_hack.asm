@@ -208,6 +208,95 @@ origin 0x077C08
 base 0x800FC408
 jal RandomMusic // Stage music
 
+// Menu music
+origin 0x050038
+base 0x800D4658
+jal SramRead // SRAM read
+
+origin 0x0500A8
+base 0x800D46C8
+jal SramInit // SRAM initialize
+
+origin 0x11DAAC
+base 0x80132B1C
+jal MenuMusic // Boot
+
+origin 0x11F118
+base 0x80133008
+jal MenuMusic // Back from 1PCSS/TCSS/B1PCSS/B2PCSS
+
+origin 0x120D58
+base 0x801335A8
+jal MenuMusic // Back from Screen Adjust
+
+origin 0x1222F8
+base 0x80132EA8
+jal MenuMusic // Back from Sound Test
+
+origin 0x1250F0
+base 0x80134740
+jal MenuMusic // Back from VCSS
+
+origin 0x139578
+base 0x8013B2F8
+jal MenuMusic // VCSS
+
+origin 0x140734
+base 0x80138534
+jal MenuMusic // 1PCSS
+
+origin 0x1474B4
+base 0x80137ED4
+jal MenuMusic // TCSS
+
+origin 0x14CF08
+base 0x80136ED8
+jal MenuMusic // B1PCSS/B2PCSS
+
+origin 0x15D4F8
+base 0x801365B8
+jal MenuMusic // Versus Record
+
+origin 0x160084
+base 0x80134034
+jal MenuMusic // Characters
+
+origin 0x121E40
+base 0x801329F0
+jal ChangeMusic // Characters
+
+origin 0x121E98
+base 0x80132A48
+jal ChangeMusic // Versus Record
+
+origin 0x12FC20
+base 0x801327C0
+jal ChangeMusic // Screen Adjust
+
+origin 0x13EEDC
+base 0x80136CDC
+jal ChangeMusic // Back from 1PCSS
+
+origin 0x1363A0
+base 0x80138120
+jal ChangeMusic // Back from VCSS
+
+origin 0x14B7B4
+base 0x80135784
+jal ChangeMusic // Back from B1PCSS/B2PCSS
+
+origin 0x144DD0
+base 0x801357F0
+jal ChangeMusic // Back from TCSS
+
+origin 0x188644
+base 0x80132274
+jal ChangeMusic // Back from Sound Test
+
+origin 0x188548
+base 0x80132178
+jal SaveMusic
+
 // Initialize
 origin 0x001234
 base 0x80000634
@@ -783,6 +872,118 @@ scope RandomMusic: {
   End:
     jal 0x80020AB4 // Original instructions
     or a0, r0, r0
+    lw ra, 0x14 (sp)
+    jr ra
+    addiu sp, 0x18
+}
+
+// Menu music
+scope SramRead: {
+  addiu sp, -0x18
+  sw ra, 0x14 (sp)
+  jal 0x80002DA4 // Original instruction
+  nop
+  ori a0, r0, 0x7F00 // SRAM source
+  addiu a1, sp, 0x10 // RAM destination
+  jal 0x80002DA4 // SRAM Read
+  ori a2, r0, 0x01 // Size
+  lbu t0, 0x10 (sp)
+  lui t1, 0x8050
+  sb t0, 0x02 (t1)
+  End:
+    lw ra, 0x14 (sp)
+    jr ra
+    addiu sp, 0x18
+}
+
+scope SramInit: {
+  addiu sp, -0x18
+  sw ra, 0x14 (sp)
+  jal 0x800D45F4 // Original instruction
+  nop
+  lui t0, 0x8050
+  ori t1, r0, 0x2C
+  sb t1, 0x02 (t0)
+  sb t1, 0x10 (sp)
+  addiu a0, sp, 0x10 // RAM source
+  ori a1, r0, 0x7F00 // SRAM destination
+  jal 0x80002DE0 // SRAM Write
+  ori a2, r0, 0x01 // Size
+  End:
+    lw ra, 0x14 (sp)
+    jr ra
+    addiu sp, 0x18
+}
+
+scope MenuMusic: {
+  addiu sp, -0x18
+  sw ra, 0x14 (sp)
+  lui t0, 0x8050
+  lbu t0, 0x02 (t0) // Saved track
+  ori t1, r0, 0x2C
+  beq t0, t1, Original // If saved track == 0x2C; use original track
+  nop
+  lui t1, 0x800A
+  lbu t1, 0x4AD1 (t1) // Last screen
+  ori t2, r0, 0x01
+  beq t1, t2, SavedTrack // Else if last screen == title screen
+  ori t2, r0, 0x16
+  beq t1, t2, SavedTrack // Or last screen == versus
+  ori t2, r0, 0x18
+  beq t1, t2, SavedTrack // Or last screen == results screen
+  ori t2, r0, 0x1B
+  beq t1, t2, SavedTrack // Or last screen == boot
+  ori t2, r0, 0x34
+  beq t1, t2, SavedTrack // Or last screen == 1p game
+  ori t2, r0, 0x35
+  beq t1, t2, SavedTrack // Or last screen == bonus practice
+  ori t2, r0, 0x36
+  beq t1, t2, SavedTrack // Or last screen == training
+  nop
+  b End
+  nop
+  SavedTrack:
+    or a1, r0, t0 // Use saved track
+  Original:
+    jal 0x80020AB4 // Original instructions
+    or a0, r0, r0
+  End:
+    lw ra, 0x14 (sp)
+    jr ra
+    addiu sp, 0x18
+}
+
+scope ChangeMusic: {
+  addiu sp, -0x18
+  sw ra, 0x14 (sp)
+  lui t0, 0x8050
+  lbu t0, 0x02 (t0) // Saved track
+  ori t1, r0, 0x2C
+  bne t0, t1, End // If saved track == 0x2C
+  nop
+  jal 0x80020A74 // Original instruction
+  nop
+  End:
+    lw ra, 0x14 (sp)
+    jr ra
+    addiu sp, 0x18
+}
+
+scope SaveMusic: {
+  addiu sp, -0x18
+  sw ra, 0x14 (sp)
+  lui t0, 0x8050
+  sb a1, 0x02 (t0) // Save a1
+  addiu a0, sp, 0x10 // RAM source
+  sb a1, 0 (a0)
+  ori a1, r0, 0x7F00 // SRAM destination
+  jal 0x80002DE0 // SRAM Write
+  ori a2, r0, 0x01 // Size
+  lui t0, 0x8050
+  lbu a1, 0x02 (t0) // Restore a1
+  jal 0x80020AB4 // Original instructions
+  or a0, r0, r0
+  End:
     lw ra, 0x14 (sp)
     jr ra
     addiu sp, 0x18
