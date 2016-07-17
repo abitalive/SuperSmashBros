@@ -92,11 +92,6 @@ origin 0x080414
 base 0x80104C14
 jal FinalDestination
 
-origin 0x0216F8
-base 0x80020AF8
-j FinalDestinationMusic
-nop
-
 // Extra versus and training stages
 origin 0x0803DC
 base 0x80104BDC
@@ -538,27 +533,6 @@ scope FinalDestination: {
    nop
 }
 
-scope FinalDestinationMusic: {
-  lui t0, 0x800A
-  lb t1, 0x4AD0 (t0)
-  ori t2, r0, 0x16
-  beq t1, t2, TrainingVersus // If mode == versus
-  ori t2, r0, 0x36
-  beq t1, t2, TrainingVersus // Or mode == training
-  nop
-  b End
-  nop
-  TrainingVersus:
-    lb t1, 0x4ADF (t0)
-    ori t2, r0, 0x10
-    bne t1, t2, End // If level == Final Destination
-    nop
-    ori a1, r0, 0x19 // Return Master Hand music
-  End:
-    jr ra
-    sw a1, 0 (t3) // Original instruction (comment to disable music)
-}
-
 // Quick Reset
 scope QuickReset: {
   Input:
@@ -854,8 +828,10 @@ scope StockHandicap1: {
 scope RandomMusic: {
   addiu sp, -0x18
   sw ra, 0x14 (sp)
-  ori t0, r0, 0x18
-  beq a1, t0, End // If track != 0x18 (Master Hand Appearance)
+  lui t0, 0x800A
+  lbu t0, 0x4AD0 (t0) // Mode
+  ori t1, r0, 0x01
+  beq t0, t1, End // If mode != 1p game
   nop
   la t0, RandomMusicTable
   Random:
