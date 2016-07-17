@@ -6,6 +6,7 @@ Super Smash Bros. ROM hack for multiplayer
 - Allow start immediately on versus and training CSS
 - Automatic 1v1 neutral spawns
 - Boot to character selection screen
+- Configurable menu music
 - Default versus settings (5 stock, 8 minutes, CPU level 9)
 - Everything unlocked
 - Extra FFA costumes (team)
@@ -13,6 +14,8 @@ Super Smash Bros. ROM hack for multiplayer
 - Full results screen shown in stock mode
 - Music disabled (optional)
 - Quick reset button combo (usable any time, skips the results screen)
+- Random stage music
+- Stock handicap
 - Timed stock battles
 - Timeout to title screen disabled
 - Dream Land no wind
