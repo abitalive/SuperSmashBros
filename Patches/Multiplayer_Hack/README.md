@@ -22,4 +22,4 @@ Super Smash Bros. ROM hack for multiplayer
 - Hyrule Castle no tornadoes
 - Planet Zebes acid always down
 - Saffron City no Pokémon
-- Sector Z Arwing no Arwing
+- Sector Z no Arwing
