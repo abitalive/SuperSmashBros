@@ -229,14 +229,10 @@ lw a1, 0x18 (sp) // Loser
 jal 0x80138548 // Use places for auto
 or a0, v0, r0 // Winner
 
-// Random stage music
-origin 0x06341C
-base 0x800E7C1C
-jal RandomMusic // Music transition
-
 origin 0x077C08
 base 0x800FC408
 jal RandomMusic // Stage music
+nop
 
 // Menu music
 origin 0x050038
@@ -862,8 +858,10 @@ scope RandomMusic: {
     nop
     sb a1, 0x01 (t0) // Update last track
   End:
-    jal 0x80020AB4 // Original instructions
+    la v0, 0x801313A0 // Original instructions
     or a0, r0, r0
+    jal 0x80020AB4
+    sw a1, 0 (v0)
     lw ra, 0x14 (sp)
     jr ra
     addiu sp, 0x18
