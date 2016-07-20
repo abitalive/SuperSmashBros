@@ -1010,11 +1010,9 @@ db 0x08 // Yoshi's Island
 db 0x09 // Hyrule Castle
 db 0x19 // Final Destination
 db 0x1A // Bonus Stages
-db 0x22 // How to Play
 db 0x24 // Battlefield
 db 0x25 // Meta Crystal
 db 0x27 // Credits
-db 0x2A // Training Mode
 RandomMusicTableEnd:
 align(4)
 
