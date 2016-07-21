@@ -912,24 +912,33 @@ scope MenuMusic: {
   lui t0, 0x8050
   lbu t0, 0x02 (t0) // Saved track
   ori t1, r0, 0x2C
-  beq t0, t1, Original // If saved track == 0x2C; use original track
+  beq t0, t1, Original // If saved track == 0x2C (menu); use original track
   nop
   lui t1, 0x800A
   lbu t1, 0x4AD1 (t1) // Last screen
   ori t2, r0, 0x01
-  beq t1, t2, SavedTrack // Else if last screen == title screen
+  beq t1, t2, SavedTrack // Else if last screen == title screen; use saved track
   ori t2, r0, 0x16
-  beq t1, t2, SavedTrack // Or last screen == versus
+  beq t1, t2, SavedTrack // Or last screen == versus; use saved track
   ori t2, r0, 0x18
-  beq t1, t2, SavedTrack // Or last screen == results screen
+  beq t1, t2, SavedTrack // Or last screen == results screen; use saved track
   ori t2, r0, 0x1B
-  beq t1, t2, SavedTrack // Or last screen == boot
+  beq t1, t2, SavedTrack // Or last screen == boot; use saved track
   ori t2, r0, 0x34
-  beq t1, t2, SavedTrack // Or last screen == 1p game
+  beq t1, t2, SavedTrack // Or last screen == 1p game; use saved track
   ori t2, r0, 0x35
-  beq t1, t2, SavedTrack // Or last screen == bonus practice
+  beq t1, t2, SavedTrack // Or last screen == bonus practice; use saved track
   ori t2, r0, 0x36
-  beq t1, t2, SavedTrack // Or last screen == training
+  beq t1, t2, SavedTrack // Or last screen == training; use saved track
+  nop
+  la t1, 0x80132EB0
+  bne ra, t1, End // If ra == 0x80132EB0 (back from sound test)
+  nop
+  lui t1, 0x800A
+  lw t1, 0xD974 (t1) // Pointer to current track
+  lw t1, 0 (t1) // Current track
+  li t2, 0xFFFFFFFF
+  beq t1, t2, SavedTrack // And current track == 0xFFFFFFFF
   nop
   b End
   nop
@@ -947,13 +956,25 @@ scope MenuMusic: {
 scope ChangeMusic: {
   addiu sp, -0x18
   sw ra, 0x14 (sp)
-  lui t0, 0x8050
-  lbu t0, 0x02 (t0) // Saved track
-  ori t1, r0, 0x2C
-  bne t0, t1, End // If saved track == 0x2C
-  nop
-  jal 0x80020A74 // Original instruction
-  nop
+  SavedTrack:
+    lui t0, 0x8050
+    lbu t0, 0x02 (t0) // Saved track
+    ori t1, r0, 0x2C
+    beq t0, t1, Original // If saved track == 0x2C (menu); original instruction
+    nop
+  NoTrack:
+    la t0, 0x8013227C
+    bne ra, t0, End // If ra == 0x8013227C (back from sound test)
+    nop
+    lui t0, 0x800A
+    lw t0, 0xD974 (t0) // Pointer to current track
+    lw t0, 0 (t0) // Current track
+    li t1, 0xFFFFFFFF
+    bne t0, t1, End // And current track == 0xFFFFFFFF
+    nop
+  Original:
+    jal 0x80020A74 // Original instruction
+    nop
   End:
     lw ra, 0x14 (sp)
     jr ra
