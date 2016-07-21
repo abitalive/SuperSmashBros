@@ -28,31 +28,47 @@ db 0x10
 // Disable timeout to title screen
 origin 0x11D5B0
 base 0x80132620
-b 0x80132640 // MSS
+b 0x80132640 // Mode select screen
 
 origin 0x11EB1C
 base 0x80132A0C
-b 0x80132A2C // 1PMS
+b 0x80132A2C // 1P menu screen
+
+origin 0x120658
+base 0x80132EA8
+b 0x80132ED0 // Option screen
+
+origin 0x121D20
+base 0x801328D0
+b 0x801328F0 // Data screen
 
 origin 0x1245A0
 base 0x80133BF0
-b 0x80133C18 // VMS
+b 0x80133C18 // Versus menu screen
 
 origin 0x127284
 base 0x80133AA4
-b 0x80133AD4 // VOS
+b 0x80133AD4 // Versus options screen
+
+origin 0x133A24
+base 0x801369F8
+b 0x80136A28 // Bonus practice character selection screen
 
 origin 0x138BDC
 base 0x8013A95C
-b 0x8013A984 // VCSS
+b 0x8013A984 // Versus character selection screen
+
+origin 0x1401F4
+base 0x80137FF4
+b 0x80138024 // 1P character selection screen
 
 origin 0x146D08
 base 0x80137728
-b 0x80137758 // TCSS
+b 0x80137758 // Training character selection screen
 
 origin 0x14F928
 base 0x80133DB8
-b 0x80133DE0 // SSS
+b 0x80133DE0 // Stage selection screen
 
 // Default versus settings
 origin 0x040898
