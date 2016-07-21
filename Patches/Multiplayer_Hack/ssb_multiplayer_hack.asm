@@ -229,6 +229,7 @@ lw a1, 0x18 (sp) // Loser
 jal 0x80138548 // Use places for auto
 or a0, v0, r0 // Winner
 
+// Random stage music
 origin 0x077C08
 base 0x800FC408
 jal RandomMusic // Stage music
