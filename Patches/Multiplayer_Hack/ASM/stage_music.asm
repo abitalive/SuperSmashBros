@@ -15,7 +15,7 @@ scope RandomMusic: {
   luia(t0, ScreenCurrent)
   lbu t0, ScreenCurrent (t0) // Mode
   lli t1, 0x01
-  beq t0, t1, End // If mode != 1p game
+  beq t0, t1, Original // If mode != 1p game
   nop
   Random:
     jal RandomInt
@@ -28,11 +28,12 @@ scope RandomMusic: {
     beq a1, t1, Random // If lookup track == last track; generate another random track
     nop
     sb a1, TrackLast (t0) // Update last track
-  End:
+  Original:
     lui v0, 0x8013 // Original instructions
     or a0, r0, r0
     jal 0x80020AB4
     sw a1, 0x13A0 (v0)
+  End:
     lw ra, 0x14 (sp)
     jr ra
     addiu sp, 0x18
