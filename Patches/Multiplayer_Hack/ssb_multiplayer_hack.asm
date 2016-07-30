@@ -6,7 +6,7 @@ endian msb
 
 include "..\LIB\functions.inc"
 include "..\LIB\macros.inc"
-include "..\LIB\n64.inc"
+include "..\LIB\N64.inc"
 include "..\LIB\variables.inc"
 
 origin 0x0
