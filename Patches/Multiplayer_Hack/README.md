@@ -7,7 +7,7 @@ Super Smash Bros. ROM hack for multiplayer
 - Automatic 1v1 neutral spawns
 - Boot to character selection screen
 - Configurable menu music
-- Default versus settings (5 stock, 8 minutes, CPU level 9)
+- Default versus settings (5 stock, 8 minutes, items disabled, CPU level 9)
 - Everything unlocked
 - Extra FFA costumes (team)
 - Extra versus and training stages toggle (Meta Crystal, Battlefield, Final Destination)
@@ -23,3 +23,9 @@ Super Smash Bros. ROM hack for multiplayer
 - Planet Zebes acid always down
 - Saffron City no Pokémon
 - Sector Z no Arwing
+
+## Building (Windows)
+- Clone or download the repository
+- Put "Super Smash Bros. (U) [!].z64" in the LIB directory
+- Download and extract [these files](https://drive.google.com/file/d/0B1g_ALmgbOzxSDdWVVA4TXdwWlk/view?usp=sharing) to the Multiplayer_Hack directory
+- Drag and drop ssb_multiplayer_hack.asm onto asm.cmd
