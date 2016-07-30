@@ -37,19 +37,16 @@ scope QuickReset: {
 }
 
 scope SkipResults: {
+  lli t6, 0x18 // Original instruction
   lui t0, 0x800A
   lbu t0, 0x4AE2 (t0) // Result
   lli t1, 0x02
-  bne t0, t1, Original // If result == skip
+  bne t0, t1, End // If result == skip
   nop
-  lli t0, 0x10 // Skip results screen
-  b End
-  nop
-  Original:
-    lli t0, 0x18 // Else original instruction
+  lli t6, 0x10 // Skip results screen
   End:
     j SkipResults_Return
-    sb t0, 0 (v0)
+    sb t6, 0 (v0) // Original instruction
 }
 
 pushvar origin, pc
