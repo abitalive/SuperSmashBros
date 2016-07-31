@@ -1,5 +1,5 @@
 # Super Smash Bros. Multiplayer ROM Hack
-Super Smash Bros. ROM hack for multiplayer
+Expansion Pak required
 
 ## Features
 - Allow skipping results screen immediately
