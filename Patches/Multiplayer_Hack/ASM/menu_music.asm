@@ -122,7 +122,7 @@ scope MenuMusicRead: {
   jal SramRead
   lli a2, 0x01 // Size
   lbu t0, 0x10 (sp)
-  luia(t1, TrackMenu)
+  lua(t1, TrackMenu)
   sb t0, TrackMenu (t1)
   End:
     lw ra, 0x14 (sp)
@@ -135,7 +135,7 @@ scope MenuMusicInit: {
   sw ra, 0x14 (sp)
   jal 0x800D45F4 // Original instruction
   nop
-  luia(t0, TrackMenu)
+  lua(t0, TrackMenu)
   lli t1, 0x2C
   sb t1, TrackMenu (t0)
   sb t1, 0x10 (sp)
@@ -152,12 +152,12 @@ scope MenuMusicInit: {
 scope MenuMusic: {
   addiu sp, -0x18
   sw ra, 0x14 (sp)
-  luia(t0, TrackMenu)
+  lua(t0, TrackMenu)
   lbu t0, TrackMenu (t0) // Saved track
   lli t1, 0x2C
   beq t0, t1, Original // If saved track == 0x2C (menu); use original track
   nop
-  luia(t1, ScreenPrevious)
+  lua(t1, ScreenPrevious)
   lbu t1, ScreenPrevious (t1) // Last screen
   lli t2, 0x01
   beq t1, t2, SavedTrack // Else if last screen == title screen; use saved track
@@ -200,7 +200,7 @@ scope MenuMusicChange: {
   addiu sp, -0x18
   sw ra, 0x14 (sp)
   SavedTrack:
-    luia(t0, TrackMenu)
+    lua(t0, TrackMenu)
     lbu t0, TrackMenu (t0) // Saved track
     lli t1, 0x2C
     beq t0, t1, Original // If saved track == 0x2C (menu); original instruction
@@ -227,14 +227,14 @@ scope MenuMusicChange: {
 scope MenuMusicSave: {
   addiu sp, -0x18
   sw ra, 0x14 (sp)
-  luia(t0, TrackMenu)
+  lua(t0, TrackMenu)
   sb a1, TrackMenu (t0) // Save a1
   addiu a0, sp, 0x10 // RAM source
   sb a1, 0 (a0)
   lli a1, SramTrackMenu // SRAM destination
   jal SramWrite // SRAM Write
   lli a2, 0x01 // Size
-  luia(t0, TrackMenu)
+  lua(t0, TrackMenu)
   lbu a1, TrackMenu (t0) // Restore a1
   jal 0x80020AB4 // Original instructions
   or a0, r0, r0

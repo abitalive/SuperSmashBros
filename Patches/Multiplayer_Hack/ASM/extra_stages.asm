@@ -28,14 +28,14 @@ jal ExtraStagesVisual
 pullvar pc, origin
 
 scope ExtraStagesTraining: {
-  luia(t6, ScreenCurrent) // Original instructions
+  lua(t6, ScreenCurrent) // Original instructions
   lbu t6, ScreenCurrent (t6)
   lli t0, 0x36
   bne t6, t0, End // If mode == training
   nop
-  luia(t0, Stage)
+  lua(t0, Stage)
   lbu t0, Stage (t0) // Stage
-  luia(t1, ExtraStagesTable) // Pointer to lookup stage
+  lua(t1, ExtraStagesTable) // Pointer to lookup stage
   lli t2, (ExtraStagesTableEnd - ExtraStagesTable) / 2 // Loop counter
   Loop:
     lbu t3, ExtraStagesTable + 1 (t1) // Lookup stage
@@ -58,7 +58,7 @@ scope ExtraStagesRandom: {
   Random:
     jal RandomInt
     lli a0, RandomStageListEnd - RandomStageList // Range
-    luia(t0, RandomStageList) // Pointer to stage
+    lua(t0, RandomStageList) // Pointer to stage
     addu t0, v0 // Update pointer
     lbu v0, RandomStageList (t0) // Stage
   End:
@@ -68,11 +68,11 @@ scope ExtraStagesRandom: {
 }
 
 scope ExtraStagesSwap: {
-  luia(t0, ExtraStagesFlag)
+  lua(t0, ExtraStagesFlag)
   lbu t0, ExtraStagesFlag (t0) // Extra stages flag
   beqz t0, End // If extra stages enabled
   nop
-  luia(t0, ExtraStagesTable) // Pointer to lookup stage
+  lua(t0, ExtraStagesTable) // Pointer to lookup stage
   lli t1, (ExtraStagesTableEnd - ExtraStagesTable) / 2 // Loop counter
   Loop:
     lbu t2, ExtraStagesTable (t0) // Lookup stage
@@ -106,7 +106,7 @@ scope ExtraStagesToggle: {
     sw r0, 0x3F10 (t0)
     sw r0, 0x3F1C (t0)
     sw r0, 0x3F20 (t0)
-    luia(t0, ExtraStagesFlag)
+    lua(t0, ExtraStagesFlag)
     lbu t1, ExtraStagesFlag (t0) // Extra stages flag
     xori t1, 0x01 // Toggle flag
     sb t1, ExtraStagesFlag (t0) // Store new flag
@@ -121,7 +121,7 @@ scope ExtraStagesVisual: {
   sw ra, 0x14 (sp)
   jal 0x800CDE04 // Original instruction
   nop
-  luia(t0, ExtraStagesFlag)
+  lua(t0, ExtraStagesFlag)
   lbu t0, ExtraStagesFlag (t0) // Extra stages flag
   beqz t0, End // If extra stages enabled
   nop

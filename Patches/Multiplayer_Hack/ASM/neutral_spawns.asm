@@ -9,7 +9,7 @@ NeutralSpawns_Return:
 pullvar pc, origin
 
 scope NeutralSpawns: {
-  luia(t0, ScreenCurrent)
+  lua(t0, ScreenCurrent)
   lbu t0, ScreenCurrent (t0) // Mode
   lli t1, 0x16
   bne t0, t1, End // If mode == versus
@@ -37,9 +37,9 @@ scope NeutralSpawns: {
   bne t3, t0, End // If players == 2
   nop
   Lookup:
-    luia(t0, Stage)
+    lua(t0, Stage)
     lbu t0, Stage (t0) // Stage
-    luia(t1, NeutralSpawnsTable) // Pointer to lookup stage
+    lua(t1, NeutralSpawnsTable) // Pointer to lookup stage
     Loop1:
       lbu t2, NeutralSpawnsTable (t1) // Lookup stage
       bnel t0, t2, Loop1 // Break if stage == lookup stage
