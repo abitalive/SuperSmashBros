@@ -12,17 +12,17 @@ nop
 pullvar pc, origin
 
 scope ExtraCostumes: {
+  Z:
+    lw t0, 0x24 (sp)
+    lhu t0, 0 (t0)
+    andi t0, 0x2000 // Z
+    beqz t0, End
+    nop
   Red:
     lw t0, 0x24 (sp)
-    lhu t1, 0 (t0)
-    lli t2, 0x2000 // Z
-    and t3, t1, t2
-    bne t2, t3, Blue
-    nop
-    lhu t1, 0x02 (t0)
-    lli t2, 0x0008 // C Up
-    and t3, t1, t2
-    bne t2, t3, Blue
+    lhu t0, 0x02 (t0)
+    andi t0, 0x0008 // C Up
+    beqz t0, Blue
     nop
     lw a0, 0x40 (sp)
     lw a1, 0x28 (sp)
@@ -31,6 +31,7 @@ scope ExtraCostumes: {
     jal 0x8013718C
     lli a3, 0x04
     bnez v0, Blue
+    nop
     lw t0, 0x1C (sp)
     lw t0, 0x88 (t0)
     beqz t0, Blue
@@ -38,17 +39,13 @@ scope ExtraCostumes: {
     lw a0, 0x28 (sp)
     jal 0x80137EFC
     lli a1, 0x04
+    b End
+    nop
   Blue:
     lw t0, 0x24 (sp)
-    lhu t1, 0 (t0)
-    lli t2, 0x2000 // Z
-    and t3, t1, t2
-    bne t2, t3, Green
-    nop
-    lhu t1, 0x02 (t0)
-    lli t2, 0x0001 // C Right
-    and t3, t1, t2
-    bne t2, t3, Green
+    lhu t0, 0x02 (t0)
+    andi t0, 0x0001 // C Right
+    beqz t0, Green
     nop
     lw a0, 0x40 (sp)
     lw a1, 0x28 (sp)
@@ -57,6 +54,7 @@ scope ExtraCostumes: {
     jal 0x8013718C
     lli a3, 0x05
     bnez v0, Green
+    nop
     lw t0, 0x1C (sp)
     lw t0, 0x88 (t0)
     beqz t0, Green
@@ -64,17 +62,13 @@ scope ExtraCostumes: {
     lw a0, 0x28 (sp)
     jal 0x80137EFC
     lli a1, 0x05
+    b End
+    nop
   Green:
     lw t0, 0x24 (sp)
-    lhu t1, 0 (t0)
-    lli t2, 0x2000 // Z
-    and t3, t1, t2
-    bne t2, t3, Extra
-    nop
-    lhu t1, 0x02 (t0)
-    lli t2, 0x0004 // C Down
-    and t3, t1, t2
-    bne t2, t3, Extra
+    lhu t0, 0x02 (t0)
+    andi t0, 0x0004 // C Down
+    beqz t0, Extra
     nop
     lw a0, 0x40 (sp)
     lw a1, 0x28 (sp)
@@ -83,6 +77,7 @@ scope ExtraCostumes: {
     jal 0x8013718C
     lli a3, 0x06
     bnez v0, Extra
+    nop
     lw t0, 0x1C (sp)
     lw t0, 0x88 (t0)
     beqz t0, Extra
@@ -90,17 +85,13 @@ scope ExtraCostumes: {
     lw a0, 0x28 (sp)
     jal 0x80137EFC
     lli a1, 0x06
+    b End
+    nop
   Extra:
     lw t0, 0x24 (sp)
-    lhu t1, 0 (t0)
-    lli t2, 0x2000 // Z
-    and t3, t1, t2
-    bne t2, t3, End
-    nop
-    lhu t1, 0x02 (t0)
-    lli t2, 0x0002 // C Left
-    and t3, t1, t2
-    bne t2, t3, End
+    lhu t0, 0x02 (t0)
+    andi t0, 0x0002 // C Left
+    beqz t0, End
     nop
     lw a0, 0x40 (sp)
     lw a1, 0x28 (sp)
@@ -109,6 +100,7 @@ scope ExtraCostumes: {
     jal 0x8013718C
     lli a3, 0x07
     bnez v0, End
+    nop
     lw t0, 0x1C (sp)
     lw t0, 0x88 (t0)
     beqz t0, End
