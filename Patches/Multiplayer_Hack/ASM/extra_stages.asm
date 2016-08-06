@@ -2,11 +2,13 @@
 
 constant ExtraStagesFlag(0x80500000) // Extra stages flag location
 
-origin 0x0803DC
-base 0x80104BDC
-j ExtraStagesTraining
-nop
-ExtraStagesTraining_Return:
+origin 0x1145E0
+base 0x8018DDC0
+jal ExtraStagesTraining0
+
+origin 0x11463C
+base 0x8018DE1C
+jal ExtraStagesTraining1
 
 origin 0x14F744
 base 0x80133BD4
@@ -27,28 +29,35 @@ jal ExtraStagesVisual
 
 pullvar pc, origin
 
-scope ExtraStagesTraining: {
-  lua(t6, ScreenCurrent) // Original instructions
-  lbu t6, ScreenCurrent (t6)
-  lli t0, 0x36
-  bne t6, t0, End // If mode == training
-  nop
-  lua(t0, Stage)
-  lbu t0, Stage (t0) // Stage
-  lua(t1, ExtraStagesTable) // Pointer to lookup stage
-  lli t2, (ExtraStagesTableEnd - ExtraStagesTable) / 2 // Loop counter
+scope ExtraStagesTraining0: {
+  lbu v0, 0x01 (t6) // Original instruction
+  lua(t0, ExtraStagesTable) // Pointer to lookup stage
+  lli t1, (ExtraStagesTableEnd - ExtraStagesTable) / 2 // Loop counter
   Loop:
-    lbu t3, ExtraStagesTable + 1 (t1) // Lookup stage
-    beq t3, t0, VersusBackground // If stage == lookup stage
-    addiu t2, -0x01 // Decrement loop counter
-    bnez t2, Loop // Break if loop counter == 0
-    addiu t1, 0x02 // Update pointer for next stage
-  b End
-  nop
-  VersusBackground:
-    lli t6, 0x16 // Return versus background
+    lbu t2, ExtraStagesTable + 1 (t0) // Lookup stage
+    beql t2, v0, End // If stage == lookup stage; swap stage
+    lbu v0, ExtraStagesTable (t0)
+    addiu t1, -0x01 // Decrement loop counter
+    bnez t1, Loop // Break if loop counter == 0
+    addiu t0, 0x02 // Update pointer for next stage
   End:
-    j ExtraStagesTraining_Return
+    jr ra
+    nop
+}
+
+scope ExtraStagesTraining1: {
+  lbu t3, 0x01 (t2) // Original instruction
+  lua(t0, ExtraStagesTable) // Pointer to lookup stage
+  lli t1, (ExtraStagesTableEnd - ExtraStagesTable) / 2 // Loop counter
+  Loop:
+    lbu t2, ExtraStagesTable + 1 (t0) // Lookup stage
+    beql t2, t3, End // If stage == lookup stage; swap stage
+    lbu t3, ExtraStagesTable (t0)
+    addiu t1, -0x01 // Decrement loop counter
+    bnez t1, Loop // Break if loop counter == 0
+    addiu t0, 0x02 // Update pointer for next stage
+  End:
+    jr ra
     nop
 }
 
@@ -76,14 +85,11 @@ scope ExtraStagesSwap: {
   lli t1, (ExtraStagesTableEnd - ExtraStagesTable) / 2 // Loop counter
   Loop:
     lbu t2, ExtraStagesTable (t0) // Lookup stage
-    beq t2, v0, Swap // If stage == lookup stage
+    beql t2, v0, End // If stage == lookup stage; swap stage
+    lbu v0, ExtraStagesTable + 1 (t0)
     addiu t1, -0x01 // Decrement loop counter
     bnez t1, Loop // Break if loop counter == 0
     addiu t0, 0x02 // Update pointer for next stage
-  b End
-  nop
-  Swap:
-    lbu v0, ExtraStagesTable + 1 (t0) // Swap stage
   End:
     jr ra
     sb v0, 0x000F (s1) // Original instruction
