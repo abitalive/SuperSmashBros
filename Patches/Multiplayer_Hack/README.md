@@ -20,6 +20,7 @@ Expansion Pak required
 - Stock handicap
 - Timed stock battles
 - Timeout to title screen disabled
+- Toggle between time and stock on versus CSS
 
 ## Building (Windows)
 - Clone or download the repository
