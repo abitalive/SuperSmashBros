@@ -36,6 +36,7 @@ scope Initialize1: {
   sb r0, ExtraStagesFlag (t0) // Extra stages flag
   lli t1, 0xFF
   sb t1, TrackLast (t0) // Last track variable
+  sb r0, FrozenStagesFlag (t0) // Frozen stages flag
   End:
     jr ra
     nop

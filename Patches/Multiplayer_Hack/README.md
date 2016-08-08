@@ -11,6 +11,7 @@ Expansion Pak required
 - Everything unlocked
 - Extra FFA costumes (team)
 - Extra versus and training stages toggle (Meta Crystal, Battlefield, Final Destination)
+- Frozen stages toggle
 - Full results screen shown in stock mode
 - Music disabled (optional)
 - Quick reset button combo (usable any time, skips the results screen)
@@ -18,11 +19,6 @@ Expansion Pak required
 - Stock handicap
 - Timed stock battles
 - Timeout to title screen disabled
-- Dream Land no wind
-- Hyrule Castle no tornadoes
-- Planet Zebes acid always down
-- Saffron City no Pokémon
-- Sector Z no Arwing
 
 ## Building (Windows)
 - Clone or download the repository
