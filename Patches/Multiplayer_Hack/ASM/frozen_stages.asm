@@ -235,7 +235,7 @@ scope CursorColorToggle: {
     sb t3, 0x28 (t2)
     lbu t3, 0x2A (t2) // Blue
     xori t3, 0xFF // Toggle blue
-    sb t3, 0x2a (t2)
+    sb t3, 0x2A (t2)
   Original:
     jal 0x8039076C
     lli a0, 0x9000
