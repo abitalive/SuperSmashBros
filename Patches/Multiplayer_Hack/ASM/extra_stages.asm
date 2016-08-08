@@ -31,6 +31,10 @@ pullvar pc, origin
 
 scope ExtraStagesTraining0: {
   lbu v0, 0x01 (t6) // Original instruction
+  YoshisIsland:
+    lli t0, 0x0C // Yoshi's Island cloudless
+    beql v0, t0, End // If stage == Yoshi's Island cloudless
+    lli v0, 0x05 // Swap with Yoshi's Island
   lua(t0, ExtraStagesTable) // Pointer to lookup stage
   lli t1, (ExtraStagesTableEnd - ExtraStagesTable) / 2 // Loop counter
   Loop:
@@ -47,6 +51,10 @@ scope ExtraStagesTraining0: {
 
 scope ExtraStagesTraining1: {
   lbu t3, 0x01 (t2) // Original instruction
+  YoshisIsland:
+    lli t0, 0x0C // Yoshi's Island cloudless
+    beql t3, t0, End // If stage == Yoshi's Island cloudless
+    lli t3, 0x05 // Swap with Yoshi's Island
   lua(t0, ExtraStagesTable) // Pointer to lookup stage
   lli t1, (ExtraStagesTableEnd - ExtraStagesTable) / 2 // Loop counter
   Loop:
