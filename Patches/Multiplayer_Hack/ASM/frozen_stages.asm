@@ -95,23 +95,23 @@ scope FrozenHazard: {
     lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
     bnez t0, End // And frozen stages enabled; skip instruction
     nop
-    Original:
-      lua(t0, Stage)
-      lbu t0, Stage (t0) // Stage
-      lua(t1, HazardFunctionsTable) // Pointer to lookup stage
-      Loop:
-        lw t2, HazardFunctionsTable (t1)
-        bnel t0, t2, Loop // Break if stage == lookup stage
-        addiu t1, 0x0C // Update pointer for next stage
-      lw t3, HazardFunctionsTable + 4 (t1) // Hazard function 1
-      jalr t3
-      sw t1, 0x10 (sp) // Save t1
-      lw t1, 0x10 (sp) // Restore t1
-      lw t3, HazardFunctionsTable + 8 (t1) // Hazard function 2
-      beqz t3, End // If hazard function 2 != 0
-      nop
-      jalr t3
-      nop
+  Original:
+    lua(t0, Stage)
+    lbu t0, Stage (t0) // Stage
+    lua(t1, HazardFunctionsTable) // Pointer to lookup stage
+    Loop:
+      lw t2, HazardFunctionsTable (t1)
+      bnel t0, t2, Loop // Break if stage == lookup stage
+      addiu t1, 0x0C // Update pointer for next stage
+    lw t3, HazardFunctionsTable + 4 (t1) // Hazard function 1
+    jalr t3
+    sw t1, 0x10 (sp) // Save t1
+    lw t1, 0x10 (sp) // Restore t1
+    lw t3, HazardFunctionsTable + 8 (t1) // Hazard function 2
+    beqz t3, End // If hazard function 2 != 0
+    nop
+    jalr t3
+    nop
   End:
     lw ra, 0x14 (sp)
     jr ra
@@ -135,17 +135,17 @@ scope FrozenObject: {
     lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
     bnez t0, End // And frozen stages enabled; skip instruction
     nop
-    Original:
-      lua(t0, Stage)
-      lbu t0, Stage (t0) // Stage
-      lua(t1, ObjectFunctionsTable) // Pointer to lookup stage
-      Loop:
-        lw t2, ObjectFunctionsTable (t1)
-        bnel t0, t2, Loop // Break if stage == lookup stage
-        addiu t1, 0x08 // Update pointer for next stage
-      lw t3, ObjectFunctionsTable + 4 (t1) // Object function
-      jalr t3
-      nop
+  Original:
+    lua(t0, Stage)
+    lbu t0, Stage (t0) // Stage
+    lua(t1, ObjectFunctionsTable) // Pointer to lookup stage
+    Loop:
+      lw t2, ObjectFunctionsTable (t1)
+      bnel t0, t2, Loop // Break if stage == lookup stage
+      addiu t1, 0x08 // Update pointer for next stage
+    lw t3, ObjectFunctionsTable + 4 (t1) // Object function
+    jalr t3
+    nop
   End:
     lw ra, 0x14 (sp)
     jr ra
