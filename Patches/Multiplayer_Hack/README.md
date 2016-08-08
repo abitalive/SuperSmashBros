@@ -2,6 +2,7 @@
 Expansion Pak required
 
 ## Features
+- Allow full control of time setting on versus CSS
 - Allow skipping results screen immediately
 - Allow start immediately on versus and training CSS
 - Automatic 1v1 neutral spawns
