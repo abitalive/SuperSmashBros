@@ -180,12 +180,9 @@ scope CursorColorInitial: {
   beqz t0, Original // If frozen stages enabled
   nop
   Toggle:
-    lbu t0, 0x28 (v0) // Red
-    xori t0, 0xFF // Toggle red
-    sb t0, 0x28 (v0)
-    lbu t0, 0x2A (v0) // Blue
-    xori t0, 0xFF // Toggle blue
-    sb t0, 0x2a (v0)
+    sb r0, 0x28 (v0) // Red
+    lli t0, 0xFF
+    sb t0, 0x2A (v0) // Blue
   Original:
     jal 0x80132A58 // Original instruction
     nop
