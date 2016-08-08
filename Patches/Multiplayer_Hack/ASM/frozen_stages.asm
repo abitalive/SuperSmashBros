@@ -3,7 +3,7 @@
 constant FrozenStagesFlag(0x80500003) // Frozen stages flag location
 constant FrozenStagesPtr(0x80500004) // Cursor color pointer location
 
-// Dream Land no wind
+// Dream Land wind
 origin 0x081734
 base 0x80105F34
 jal FrozenHazard
@@ -200,10 +200,10 @@ scope FrozenYoshisIsland0: {
   sw ra, 0x14 (sp)
   lua(t0, FrozenStagesFlag)
   lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
-  beqz t0, Original // And frozen stages enabled
+  beqz t0, Original // If frozen stages enabled
   nop
   lli t0, 0x05 // Yoshi's Island
-  bne v0, t0, Original // If stage == Yoshi's Island
+  bne v0, t0, Original // And stage == Yoshi's Island
   nop
   lli v0, 0x0C // Swap with Yoshi's Island cloudless
   Original:
@@ -219,10 +219,10 @@ scope FrozenYoshisIsland0: {
 scope FrozenYoshisIsland1: {
   lua(t0, FrozenStagesFlag)
   lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
-  beqz t0, End // And frozen stages enabled
+  beqz t0, End // If frozen stages enabled
   nop
   lli t0, 0x05 // Yoshi's Island
-  bne v0, t0, End // If stage == Yoshi's Island
+  bne v0, t0, End // And stage == Yoshi's Island
   nop
   lli v0, 0x0C // Swap with Yoshi's Island cloudless
   End:
