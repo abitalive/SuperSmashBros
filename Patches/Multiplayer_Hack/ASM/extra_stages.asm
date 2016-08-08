@@ -15,8 +15,8 @@ base 0x80133BD4
 jal ExtraStagesRandom
 nop
 
-origin 0x14F784
-base 0x80133C14
+origin 0x14F774
+base 0x80133C04
 jal ExtraStagesSwap
 
 origin 0x14FA40
@@ -77,6 +77,10 @@ scope ExtraStagesRandom: {
 }
 
 scope ExtraStagesSwap: {
+  addiu sp, -0x18
+  sw ra, 0x14 (sp)
+  jal 0x80132430 // Original instruction
+  nop
   lua(t0, ExtraStagesFlag)
   lbu t0, ExtraStagesFlag (t0) // Extra stages flag
   beqz t0, End // If extra stages enabled
@@ -91,8 +95,9 @@ scope ExtraStagesSwap: {
     bnez t1, Loop // Break if loop counter == 0
     addiu t0, 0x02 // Update pointer for next stage
   End:
+    lw ra, 0x14 (sp)
     jr ra
-    sb v0, 0x000F (s1) // Original instruction
+    addiu sp, 0x18
 }
 
 scope ExtraStagesToggle: {

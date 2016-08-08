@@ -55,10 +55,17 @@ origin 0x14E6DC
 base 0x80132B6C
 jal CursorColorInitial
 
-// Yoshi's Island (cloudless)
-origin 0x14F774
-base 0x80133C04
-jal FrozenYoshisIsland
+// Yoshi's Island cloudless (random)
+origin 0x14F74C
+base 0x80133BDC
+jal FrozenYoshisIsland0
+nop
+nop
+
+// Yoshi's Island cloudless
+origin 0x14F784
+base 0x80133C14
+jal FrozenYoshisIsland1
 
 // L or R button pressed
 origin 0x14F9D4
@@ -188,33 +195,39 @@ scope CursorColorInitial: {
     addiu sp, 0x18
 }
 
-scope FrozenYoshisIsland: {
+scope FrozenYoshisIsland0: {
   addiu sp, -0x18
   sw ra, 0x14 (sp)
-  jal 0x80132430 // Original instruction
+  lua(t0, FrozenStagesFlag)
+  lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
+  beqz t0, Original // And frozen stages enabled
   nop
-  lua(t0, ScreenPrevious)
-  lbu t0, ScreenPrevious (t0) // Mode
-  lli t1, 0x10
-  beq t0, t1, TrainingVersus // If mode == versus
-  lli t1, 0x12
-  beq t0, t1, TrainingVersus // Or mode == training
+  lli t0, 0x05 // Yoshi's Island
+  bne v0, t0, Original // If stage == Yoshi's Island
   nop
-  b End
-  nop
-  TrainingVersus:
-    lua(t0, FrozenStagesFlag)
-    lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
-    beqz t0, End // And frozen stages enabled
-    nop
-    lli t0, 0x05 // Yoshi's Island
-    bne v0, t0, End // If stage == Yoshi's Island
-    nop
-    lli v0, 0x0C // Swap with Yoshi's Island (cloudless)
+  lli v0, 0x0C // Swap with Yoshi's Island cloudless
+  Original:
+    move s0, v0 // Original instructions
+    jal 0x80131BAC
+    move a0, v0
   End:
     lw ra, 0x14 (sp)
     jr ra
     addiu sp, 0x18
+}
+
+scope FrozenYoshisIsland1: {
+  lua(t0, FrozenStagesFlag)
+  lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
+  beqz t0, End // And frozen stages enabled
+  nop
+  lli t0, 0x05 // Yoshi's Island
+  bne v0, t0, End // If stage == Yoshi's Island
+  nop
+  lli v0, 0x0C // Swap with Yoshi's Island cloudless
+  End:
+    jr ra
+    sb v0, 0x000F (s1) // Original instruction
 }
 
 scope CursorColorToggle: {
