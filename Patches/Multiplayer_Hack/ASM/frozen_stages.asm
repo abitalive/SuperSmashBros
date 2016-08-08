@@ -6,49 +6,44 @@ constant FrozenStagesPtr(0x80500004) // Cursor color pointer location
 // Dream Land no wind
 origin 0x081734
 base 0x80105F34
-jal FrozenDreamLand
+jal FrozenHazard
 
 // Sector Z Arwing
 origin 0x08364C
 base 0x80107E4C
-jal FrozenSectorZ
+jal FrozenHazard
 
 // Planet Zebes acid
 origin 0x083C10
 base 0x80108410
-jal FrozenPlanetZebes
+jal FrozenHazard
 
 // Mushroom Kingdom POW blocks
 origin 0x0851AC
 base 0x801099AC
-jal FrozenMushroomKingdom0
+jal FrozenHazard
 
 // Mushroom Kingdom Piranha Plants
 origin 0x085424
 base 0x80109C24
-jal FrozenMushroomKingdom1
+jal FrozenObject
 
 // Congo Jungle barrel
 origin 0x0857BC
 base 0x80109FBC
-jal FrozenCongoJungle
+jal FrozenObject
 
 // Hyrule Castle tornadoes
 origin 0x086160
 base 0x8010A960
-jal FrozenHyruleCastle
+jal FrozenHazard
 
 // Saffron City Pokemon
 origin 0x086974
 base 0x8010B174
-jal FrozenSaffronCity
+jal FrozenHazard
 nop
 nop
-
-// Yoshi's Island clouds
-origin 0x14F774
-base 0x80133C04
-jal FrozenYoshisIsland
 
 // Save pointer to cursor color
 origin 0x14E6A8
@@ -59,6 +54,11 @@ jal CursorColorPtr
 origin 0x14E6DC
 base 0x80132B6C
 jal CursorColorInitial
+
+// Yoshi's Island (cloudless)
+origin 0x14F774
+base 0x80133C04
+jal FrozenYoshisIsland
 
 // L or R button pressed
 origin 0x14F9D4
@@ -78,7 +78,7 @@ lli a0, 0x0101
 
 pullvar pc, origin
 
-scope FrozenDreamLand: {
+scope FrozenHazard: {
   addiu sp, -0x18
   sw ra, 0x14 (sp)
   lua(t0, ScreenCurrent)
@@ -96,7 +96,21 @@ scope FrozenDreamLand: {
     bnez t0, End // And frozen stages enabled; skip instruction
     nop
   Original:
-    jal 0x80105BE8 // Else original instruction
+    lua(t0, Stage)
+    lbu t0, Stage (t0) // Stage
+    lua(t1, HazardFunctionsTable) // Pointer to lookup stage
+    Loop:
+      lw t2, HazardFunctionsTable (t1)
+      bnel t0, t2, Loop // Break if stage == lookup stage
+      addiu t1, 0x0C // Update pointer for next stage
+    lw t3, HazardFunctionsTable + 4 (t1) // Hazard function 1
+    jalr t3
+    sw t1, 0x10 (sp) // Save t1
+    lw t1, 0x10 (sp) // Restore t1
+    lw t3, HazardFunctionsTable + 8 (t1) // Hazard function 2
+    beqz t3, End // If hazard function 2 != 0
+    nop
+    jalr t3
     nop
   End:
     lw ra, 0x14 (sp)
@@ -104,7 +118,7 @@ scope FrozenDreamLand: {
     addiu sp, 0x18
 }
 
-scope FrozenSectorZ: {
+scope FrozenObject: {
   addiu sp, -0x18
   sw ra, 0x14 (sp)
   lua(t0, ScreenCurrent)
@@ -122,7 +136,15 @@ scope FrozenSectorZ: {
     bnez t0, End // And frozen stages enabled; skip instruction
     nop
   Original:
-    jal 0x80106AC0 // Else original instruction
+    lua(t0, Stage)
+    lbu t0, Stage (t0) // Stage
+    lua(t1, ObjectFunctionsTable) // Pointer to lookup stage
+    Loop:
+      lw t2, ObjectFunctionsTable (t1)
+      bnel t0, t2, Loop // Break if stage == lookup stage
+      addiu t1, 0x08 // Update pointer for next stage
+    lw t3, ObjectFunctionsTable + 4 (t1) // Object function
+    jalr t3
     nop
   End:
     lw ra, 0x14 (sp)
@@ -130,157 +152,35 @@ scope FrozenSectorZ: {
     addiu sp, 0x18
 }
 
-scope FrozenPlanetZebes: {
+scope CursorColorPtr: {
   addiu sp, -0x18
   sw ra, 0x14 (sp)
-  lua(t0, ScreenCurrent)
-  lbu t0, ScreenCurrent (t0) // Mode
-  lli t1, 0x16
-  beq t0, t1, TrainingVersus // If mode == versus
-  lli t1, 0x36
-  beq t0, t1, TrainingVersus // Or mode == training
+  jal 0x800CCFDC // Original instruction
   nop
-  b Original
-  nop
-  TrainingVersus:
-    lua(t0, FrozenStagesFlag)
-    lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
-    bnez t0, End // And frozen stages enabled; skip instruction
-    nop
-  Original:
-    jal 0x801082B4 // Else original instruction
-    nop
+  lua(t0, FrozenStagesPtr)
+  sw v0, FrozenStagesPtr (t0) // Save pointer to cursor color
   End:
     lw ra, 0x14 (sp)
     jr ra
     addiu sp, 0x18
 }
 
-scope FrozenMushroomKingdom0: {
+scope CursorColorInitial: {
   addiu sp, -0x18
   sw ra, 0x14 (sp)
-  lua(t0, ScreenCurrent)
-  lbu t0, ScreenCurrent (t0) // Mode
-  lli t1, 0x16
-  beq t0, t1, TrainingVersus // If mode == versus
-  lli t1, 0x36
-  beq t0, t1, TrainingVersus // Or mode == training
+  lua(t0, FrozenStagesFlag)
+  lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
+  beqz t0, Original // If frozen stages enabled
   nop
-  b Original
-  nop
-  TrainingVersus:
-    lua(t0, FrozenStagesFlag)
-    lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
-    bnez t0, End // And frozen stages enabled; skip instruction
-    nop
+  Toggle:
+    lbu t0, 0x28 (v0) // Red
+    xori t0, 0xFF // Toggle red
+    sb t0, 0x28 (v0)
+    lbu t0, 0x2A (v0) // Blue
+    xori t0, 0xFF // Toggle blue
+    sb t0, 0x2a (v0)
   Original:
-    jal 0x80109888 // Else original instruction
-    nop
-  End:
-    lw ra, 0x14 (sp)
-    jr ra
-    addiu sp, 0x18
-}
-
-scope FrozenMushroomKingdom1: {
-  addiu sp, -0x18
-  sw ra, 0x14 (sp)
-  lua(t0, ScreenCurrent)
-  lbu t0, ScreenCurrent (t0) // Mode
-  lli t1, 0x16
-  beq t0, t1, TrainingVersus // If mode == versus
-  lli t1, 0x36
-  beq t0, t1, TrainingVersus // Or mode == training
-  nop
-  b Original
-  nop
-  TrainingVersus:
-    lua(t0, FrozenStagesFlag)
-    lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
-    bnez t0, End // And frozen stages enabled; skip instruction
-    nop
-  Original:
-    jal 0x80109774 // Else original instruction
-    nop
-  End:
-    lw ra, 0x14 (sp)
-    jr ra
-    addiu sp, 0x18
-}
-
-scope FrozenCongoJungle: {
-  addiu sp, -0x18
-  sw ra, 0x14 (sp)
-  lua(t0, ScreenCurrent)
-  lbu t0, ScreenCurrent (t0) // Mode
-  lli t1, 0x16
-  beq t0, t1, TrainingVersus // If mode == versus
-  lli t1, 0x36
-  beq t0, t1, TrainingVersus // Or mode == training
-  nop
-  b Original
-  nop
-  TrainingVersus:
-    lua(t0, FrozenStagesFlag)
-    lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
-    bnez t0, End // And frozen stages enabled; skip instruction
-    nop
-  Original:
-    jal 0x80109E84 // Else original instruction
-    nop
-  End:
-    lw ra, 0x14 (sp)
-    jr ra
-    addiu sp, 0x18
-}
-
-scope FrozenHyruleCastle: {
-  addiu sp, -0x18
-  sw ra, 0x14 (sp)
-  lua(t0, ScreenCurrent)
-  lbu t0, ScreenCurrent (t0) // Mode
-  lli t1, 0x16
-  beq t0, t1, TrainingVersus // If mode == versus
-  lli t1, 0x36
-  beq t0, t1, TrainingVersus // Or mode == training
-  nop
-  b Original
-  nop
-  TrainingVersus:
-    lua(t0, FrozenStagesFlag)
-    lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
-    bnez t0, End // And frozen stages enabled; skip instruction
-    nop
-  Original:
-    jal 0x8010A3B4 // Else original instruction
-    nop
-  End:
-    lw ra, 0x14 (sp)
-    jr ra
-    addiu sp, 0x18
-}
-
-scope FrozenSaffronCity: {
-  addiu sp, -0x18
-  sw ra, 0x14 (sp)
-  lua(t0, ScreenCurrent)
-  lbu t0, ScreenCurrent (t0) // Mode
-  lli t1, 0x16
-  beq t0, t1, TrainingVersus // If mode == versus
-  lli t1, 0x36
-  beq t0, t1, TrainingVersus // Or mode == training
-  nop
-  b Original
-  nop
-  TrainingVersus:
-    lua(t0, FrozenStagesFlag)
-    lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
-    bnez t0, End // And frozen stages enabled; skip instruction
-    nop
-  Original:
-    jal 0x8010AF48 // Else original instructions
-    nop
-    jal 0x8010B108
+    jal 0x80132A58 // Original instruction
     nop
   End:
     lw ra, 0x14 (sp)
@@ -306,23 +206,11 @@ scope FrozenYoshisIsland: {
     lua(t0, FrozenStagesFlag)
     lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
     beqz t0, End // And frozen stages enabled
+    nop
     lli t0, 0x05 // Yoshi's Island
     bne v0, t0, End // If stage == Yoshi's Island
     nop
     lli v0, 0x0C // Swap with Yoshi's Island (cloudless)
-  End:
-    lw ra, 0x14 (sp)
-    jr ra
-    addiu sp, 0x18
-}
-
-scope CursorColorPtr: {
-  addiu sp, -0x18
-  sw ra, 0x14 (sp)
-  jal 0x800CCFDC // Original instruction
-  nop
-  lua(t0, FrozenStagesPtr)
-  sw v0, FrozenStagesPtr (t0) // Save pointer to cursor color
   End:
     lw ra, 0x14 (sp)
     jr ra
@@ -357,27 +245,20 @@ scope CursorColorToggle: {
     addiu sp, 0x18
 }
 
-scope CursorColorInitial: {
-  addiu sp, -0x18
-  sw ra, 0x14 (sp)
-  lua(t0, FrozenStagesFlag)
-  lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
-  beqz t0, Original // If frozen stages enabled
-  nop
-  Toggle:
-    lbu t0, 0x28 (v0) // Red
-    xori t0, 0xFF // Toggle red
-    sb t0, 0x28 (v0)
-    lbu t0, 0x2A (v0) // Blue
-    xori t0, 0xFF // Toggle blue
-    sb t0, 0x2a (v0)
-  Original:
-    jal 0x80132A58 // Original instruction
-    nop
-  End:
-    lw ra, 0x14 (sp)
-    jr ra
-    addiu sp, 0x18
-}
+// Hazard functions table
+HazardFunctionsTable:
+dd 0x00000001, 0x80106AC0, 0x00000000 // Sector Z Arwing
+dd 0x00000003, 0x801082B4, 0x00000000 // Planet Zebes acid
+dd 0x00000004, 0x8010A3B4, 0x00000000 // Hyrule Castle tornado
+dd 0x00000006, 0x80105BE8, 0x00000000 // Dream Land wind
+dd 0x00000007, 0x8010AF48, 0x8010B108 // Saffron City Pokemon
+dd 0x00000008, 0x80109888, 0x00000000 // Mushroom Kingdom POW blocks
+align(4)
+
+// Object functions table
+ObjectFunctionsTable:
+dd 0x00000002, 0x80109E84 // Congo Jungle barrel
+dd 0x00000008, 0x80109774 // Mushroom Kingdom Piranha Plants
+align(4)
 
 pushvar origin, pc
