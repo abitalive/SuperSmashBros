@@ -8,18 +8,22 @@ pullvar pc, origin
 
 scope FinalDestination: {
   lbu v0, 0x01 (t7) // Original instruction
-  lui t0, 0x800A
-  lbu t1, Stage (t0) // Stage
-  lli t2, 0x10
-  bne t1, t2, End // If stage == Final Destination
+  lua(t0, ScreenCurrent)
+  lbu t0, ScreenCurrent (t0) // Mode
+  lli t1, 0x16
+  beq t0, t1, TrainingVersus // If mode == versus
+  lli t1, 0x36
+  beq t0, t1, TrainingVersus // Or mode == training
   nop
-  lbu t1, ScreenCurrent (t0) // Mode
-  lli t2, 0x16
-  beql t1, t2, End // And mode == versus; return Battlefield index
-  lli v0, 0x0E
-  lli t2, 0x36
-  beql t1, t2, End // Or mode == training; return Battlefield index
-  lli v0, 0x0E
+  b End
+  nop
+  TrainingVersus:
+    lua(t0, StagePtr)
+    lw t0, StagePtr (t0) // Stage pointer
+    lbu t0, 0x01 (t0) // Stage
+    lli t1, 0x10
+    beql t0, t1, End // If stage == Final Destination
+    lli v0, 0x0E // Return Battlefield index
   End:
    jr ra
    nop

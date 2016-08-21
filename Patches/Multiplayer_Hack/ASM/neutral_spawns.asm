@@ -37,8 +37,9 @@ scope NeutralSpawns: {
   bne t3, t0, End // If players == 2
   nop
   Lookup:
-    lua(t0, Stage)
-    lbu t0, Stage (t0) // Stage
+    lua(t0, StagePtr)
+    lw t0, StagePtr (t0) // Stage pointer
+    lbu t0, 0x01 (t0) // Stage
     lua(t1, NeutralSpawnsTable) // Pointer to lookup stage
     Loop1:
       lbu t2, NeutralSpawnsTable (t1) // Lookup stage

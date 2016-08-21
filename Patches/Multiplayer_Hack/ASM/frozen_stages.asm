@@ -88,23 +88,21 @@ pullvar pc, origin
 scope FrozenHazard: {
   addiu sp, -0x18
   sw ra, 0x14 (sp)
+  lua(t0, FrozenStagesFlag)
+  lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
+  beqz t0, Original // If frozen stages enabled
+  nop
   lua(t0, ScreenCurrent)
   lbu t0, ScreenCurrent (t0) // Mode
   lli t1, 0x16
-  beq t0, t1, TrainingVersus // If mode == versus
+  beq t0, t1, End // And mode == versus; skip instruction(s)
   lli t1, 0x36
-  beq t0, t1, TrainingVersus // Or mode == training
+  beq t0, t1, End // Or mode == training; skip instruction(s)
   nop
-  b Original
-  nop
-  TrainingVersus:
-    lua(t0, FrozenStagesFlag)
-    lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
-    bnez t0, End // And frozen stages enabled; skip instruction
-    nop
   Original:
-    lua(t0, Stage)
-    lbu t0, Stage (t0) // Stage
+    lua(t0, StagePtr)
+    lw t0, StagePtr (t0) // Stage pointer
+    lbu t0, 0x01 (t0) // Stage
     lua(t1, HazardFunctionsTable) // Pointer to lookup stage
     Loop:
       lw t2, HazardFunctionsTable (t1)
@@ -128,23 +126,21 @@ scope FrozenHazard: {
 scope FrozenObject: {
   addiu sp, -0x18
   sw ra, 0x14 (sp)
+  lua(t0, FrozenStagesFlag)
+  lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
+  beqz t0, Original // If frozen stages enabled
+  nop
   lua(t0, ScreenCurrent)
   lbu t0, ScreenCurrent (t0) // Mode
   lli t1, 0x16
-  beq t0, t1, TrainingVersus // If mode == versus
+  beq t0, t1, End // And mode == versus; skip instruction
   lli t1, 0x36
-  beq t0, t1, TrainingVersus // Or mode == training
+  beq t0, t1, End // Or mode == training; skip instruction
   nop
-  b Original
-  nop
-  TrainingVersus:
-    lua(t0, FrozenStagesFlag)
-    lbu t0, FrozenStagesFlag (t0) // Frozen stages flag
-    bnez t0, End // And frozen stages enabled; skip instruction
-    nop
   Original:
-    lua(t0, Stage)
-    lbu t0, Stage (t0) // Stage
+    lua(t0, StagePtr)
+    lw t0, StagePtr (t0) // Stage pointer
+    lbu t0, 0x01 (t0) // Stage
     lua(t1, ObjectFunctionsTable) // Pointer to lookup stage
     Loop:
       lw t2, ObjectFunctionsTable (t1)
