@@ -175,7 +175,7 @@ scope MenuMusic: {
   beq t1, t2, SavedTrack // Or last screen == training; use saved track
   nop
   la t1, 0x80132EB0
-  bne ra, t1, End // If ra == 0x80132EB0 (back from sound test)
+  bne ra, t1, End // If ra != 0x80132EB0 (back from sound test)
   nop
   lui t1, 0x800A
   lw t1, 0xD974 (t1) // Pointer to current track
@@ -207,7 +207,7 @@ scope MenuMusicChange: {
     nop
   NoTrack:
     la t0, 0x8013227C
-    bne ra, t0, End // If ra == 0x8013227C (back from sound test)
+    bne ra, t0, End // If ra != 0x8013227C (back from sound test)
     nop
     lui t0, 0x800A
     lw t0, 0xD974 (t0) // Pointer to current track
