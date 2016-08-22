@@ -1,4 +1,2 @@
-*.asm linguist-language=Assembly
-*.inc linguist-language=Assembly
-
+*.ia binary
 *.rgba binary
