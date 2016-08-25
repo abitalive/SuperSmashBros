@@ -4,11 +4,11 @@ arch n64.cpu
 endian msb
 //output "", create
 
-include "LIB\N64.inc"
-include "LIB\macros.inc"
+include "LIB/N64.inc"
+include "LIB/macros.inc"
 
 origin 0x0
-insert "LIB\Super Smash Bros. (U) [!].z64"
+insert "LIB/Super Smash Bros. (U) [!].z64"
 
 origin 0x1CCC
 base 0x800010CC

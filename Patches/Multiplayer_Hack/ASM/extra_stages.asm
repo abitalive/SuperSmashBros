@@ -294,13 +294,13 @@ StageTableEnd:
 align(4)
 
 // Images
-insert LogoSsb, "..\Images\ssb_logo.ia"
-insert TextMetaCrystal, "..\Images\meta_crystal_text.ia"
-insert TextBattlefield, "..\Images\battlefield_text.ia"
-insert TextFinalDestination, "..\Images\final_destination_text.ia"
-insert IconMetaCrystal, "..\Images\meta_crystal_icon.rgba" // [Jorgasms]
-insert IconBattlefield, "..\Images\battlefield_icon.rgba" // [Jorgasms]
-insert IconFinalDestination, "..\Images\final_destination_icon.rgba" // [Jorgasms]
+insert LogoSsb, "../Images/ssb_logo.ia"
+insert TextMetaCrystal, "../Images/meta_crystal_text.ia"
+insert TextBattlefield, "../Images/battlefield_text.ia"
+insert TextFinalDestination, "../Images/final_destination_text.ia"
+insert IconMetaCrystal, "../Images/meta_crystal_icon.rgba" // [Jorgasms]
+insert IconBattlefield, "../Images/battlefield_icon.rgba" // [Jorgasms]
+insert IconFinalDestination, "../Images/final_destination_icon.rgba" // [Jorgasms]
 align(4)
 
 pushvar origin, pc
