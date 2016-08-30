@@ -25,5 +25,5 @@ Expansion Pak required
 ## Building (Windows)
 - Clone or download the repository
 - Put "Super Smash Bros. (U) [!].z64" in the LIB directory
-- Download and extract [these files](https://drive.google.com/file/d/0B1g_ALmgbOzxSDdWVVA4TXdwWlk/view?usp=sharing) to the Multiplayer_Hack directory
+- Download and extract [these files](https://drive.google.com/file/d/0B1g_ALmgbOzxOTNwMWdVVDc4bXM/view?usp=sharing) to the Multiplayer_Hack directory
 - Drag and drop ssb_multiplayer_hack.asm onto asm.cmd
