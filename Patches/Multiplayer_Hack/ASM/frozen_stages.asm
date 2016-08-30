@@ -253,18 +253,18 @@ scope CursorColorToggle: {
 
 // Hazard functions table
 HazardFunctionsTable:
-dd 0x00000001, 0x80106AC0, 0x00000000 // Sector Z Arwing
-dd 0x00000003, 0x801082B4, 0x00000000 // Planet Zebes acid
-dd 0x00000004, 0x8010A3B4, 0x00000000 // Hyrule Castle tornado
-dd 0x00000006, 0x80105BE8, 0x00000000 // Dream Land wind
-dd 0x00000007, 0x8010AF48, 0x8010B108 // Saffron City Pokemon
-dd 0x00000008, 0x80109888, 0x00000000 // Mushroom Kingdom POW blocks
+dw 0x00000001, 0x80106AC0, 0x00000000 // Sector Z Arwing
+dw 0x00000003, 0x801082B4, 0x00000000 // Planet Zebes acid
+dw 0x00000004, 0x8010A3B4, 0x00000000 // Hyrule Castle tornado
+dw 0x00000006, 0x80105BE8, 0x00000000 // Dream Land wind
+dw 0x00000007, 0x8010AF48, 0x8010B108 // Saffron City Pokemon
+dw 0x00000008, 0x80109888, 0x00000000 // Mushroom Kingdom POW blocks
 align(4)
 
 // Object functions table
 ObjectFunctionsTable:
-dd 0x00000002, 0x80109E84 // Congo Jungle barrel
-dd 0x00000008, 0x80109774 // Mushroom Kingdom Piranha Plants
+dw 0x00000002, 0x80109E84 // Congo Jungle barrel
+dw 0x00000008, 0x80109774 // Mushroom Kingdom Piranha Plants
 align(4)
 
 pushvar origin, pc

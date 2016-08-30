@@ -253,43 +253,43 @@ align(4)
 // Stage table
 StageTable:
 // Peaches Castle
-dd 0x00000000 // Stage
-dd 0x00000103, 0x00000014; float32 0.5, 1700, 1800 // Preview (file, offset, zoom, x, y)
-dd 0x80157AF0, 0x801574E8; float32 3, 19 // Logo (pointer, image, x, y)
-dd 0x8015BB20, 0x8015B938 // Text (pointer, image)
-dd 0x801606B0, 0x8015F928 // Icon (pointer, image)
+dw 0x00000000 // Stage
+dw 0x00000103, 0x00000014; float32 0.5, 1700, 1800 // Preview (file, offset, zoom, x, y)
+dw 0x80157AF0, 0x801574E8; float32 3, 19 // Logo (pointer, image, x, y)
+dw 0x8015BB20, 0x8015B938 // Text (pointer, image)
+dw 0x801606B0, 0x8015F928 // Icon (pointer, image)
 // Meta Crystal
-dd 0x0000000D // Stage
-dd 0x0000010D, 0x00000014; float32 0.55, 1600, 1600 // Preview (file, offset, zoom, x, y)
-dd 0x80157AF0, 0x801574E8; float32 3, 19 // Logo (pointer, image, x, y)
-dd 0x8015BB20, TextMetaCrystal // Text (pointer, image)
-dd 0x801606B0, IconMetaCrystal // Icon (pointer, image)
+dw 0x0000000D // Stage
+dw 0x0000010D, 0x00000014; float32 0.55, 1600, 1600 // Preview (file, offset, zoom, x, y)
+dw 0x80157AF0, 0x801574E8; float32 3, 19 // Logo (pointer, image, x, y)
+dw 0x8015BB20, TextMetaCrystal // Text (pointer, image)
+dw 0x801606B0, IconMetaCrystal // Icon (pointer, image)
 
 // Congo Jungle
-dd 0x00000002 // Stage
-dd 0x00000105, 0x00000014; float32 0.6, 1600, 1600 // Preview (file, offset, zoom, x, y)
-dd 0x80158150, 0x80157B48; float32 3, 20 // Logo (pointer, image, x, y)
-dd 0x8015BFA0, 0x8015BDB8 // Text (pointer, image)
-dd 0x80162270, 0x801614E8 // Icon (pointer, image)
+dw 0x00000002 // Stage
+dw 0x00000105, 0x00000014; float32 0.6, 1600, 1600 // Preview (file, offset, zoom, x, y)
+dw 0x80158150, 0x80157B48; float32 3, 20 // Logo (pointer, image, x, y)
+dw 0x8015BFA0, 0x8015BDB8 // Text (pointer, image)
+dw 0x80162270, 0x801614E8 // Icon (pointer, image)
 // Battlefield
-dd 0x0000000E // Stage
-dd 0x0000010C, 0x00000014; float32 0.65, 1600, 1600 // Preview (file, offset, zoom, x, y)
-dd 0x80158150, LogoSsb; float32 1, 20 // Logo (pointer, image, x, y)
-dd 0x8015BFA0, TextBattlefield // Text (pointer, image)
-dd 0x80162270, IconBattlefield // Icon (pointer, image)
+dw 0x0000000E // Stage
+dw 0x0000010C, 0x00000014; float32 0.65, 1600, 1600 // Preview (file, offset, zoom, x, y)
+dw 0x80158150, LogoSsb; float32 1, 20 // Logo (pointer, image, x, y)
+dw 0x8015BFA0, TextBattlefield // Text (pointer, image)
+dw 0x80162270, IconBattlefield // Icon (pointer, image)
 
 // Hyrule Castle
-dd 0x00000004 // Stage
-dd 0x00000109, 0x00000014; float32 0.3, 1600, 1500 // Preview (file, offset, zoom, x, y)
-dd 0x80159AD0, 0x801594C8; float32 3, 17 // Logo (pointer, image, x, y)
-dd 0x8015C428, 0x8015C238 // Text (pointer, image)
-dd 0x80163E30, 0x801630A8 // Icon (pointer, image)
+dw 0x00000004 // Stage
+dw 0x00000109, 0x00000014; float32 0.3, 1600, 1500 // Preview (file, offset, zoom, x, y)
+dw 0x80159AD0, 0x801594C8; float32 3, 17 // Logo (pointer, image, x, y)
+dw 0x8015C428, 0x8015C238 // Text (pointer, image)
+dw 0x80163E30, 0x801630A8 // Icon (pointer, image)
 // Final Destination
-dd 0x00000010 // Stage
-dd 0x0000010A, 0x00000000; float32 0.55, 1600, 1500 // Preview (file, offset, zoom, x, y)
-dd 0x80159AD0, LogoSsb; float32 1, 20 // Logo (pointer, image, x, y)
-dd 0x8015C428, TextFinalDestination // Text (pointer, image)
-dd 0x80163E30, IconFinalDestination // Icon (pointer, image)
+dw 0x00000010 // Stage
+dw 0x0000010A, 0x00000000; float32 0.55, 1600, 1500 // Preview (file, offset, zoom, x, y)
+dw 0x80159AD0, LogoSsb; float32 1, 20 // Logo (pointer, image, x, y)
+dw 0x8015C428, TextFinalDestination // Text (pointer, image)
+dw 0x80163E30, IconFinalDestination // Icon (pointer, image)
 StageTableEnd:
 align(4)
 

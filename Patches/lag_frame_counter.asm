@@ -53,10 +53,10 @@ scope Calculate: {
 // Divide
 origin 0xAA738
 base 0x8012EF38
-dw 0x03E8 // 1000
-dw 0x0064 // 100
-dw 0x000A // 10
-dw 0x0001 // 1
+dh 0x03E8 // 1000
+dh 0x0064 // 100
+dh 0x000A // 10
+dh 0x0001 // 1
 
 origin 0x8E548
 base 0x80112D48
