@@ -19,8 +19,8 @@ pushvar origin, pc
 
 include "ASM/initialize.asm"
 
-include "ASM/allow_start_immediately.asm"
 include "ASM/boot_to_css.asm"
+include "ASM/css_delays.asm"
 include "ASM/css_time.asm"
 include "ASM/css_toggle.asm"
 include "ASM/default_settings.asm"
@@ -35,6 +35,7 @@ include "ASM/neutral_spawns.asm"
 include "ASM/preview_y_fix.asm"
 include "ASM/quick_reset.asm"
 include "ASM/random_stage_fix.asm"
+include "ASM/results_delay.asm"
 include "ASM/stage_music.asm"
 include "ASM/stock_handicap.asm"
 include "ASM/timed_stock.asm"
