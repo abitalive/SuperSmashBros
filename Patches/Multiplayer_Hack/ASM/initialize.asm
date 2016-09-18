@@ -2,7 +2,7 @@
 
 constant DmaSource(0x00F5F4E0) // DMA copy source
 constant DmaDestination(0x80400000) // DMA copy destination
-constant DmaSize(0x000A0B20) // DMA copy size
+constant DmaSize(DmaEnd - DmaStart) // DMA copy size
 
 origin 0x001234
 base 0x80000634

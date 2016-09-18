@@ -14,6 +14,7 @@ insert "../LIB/Super Smash Bros. (U) [!].z64"
 
 origin 0xF5F4E0
 base 0x80400000
+constant DmaStart(origin())
 pushvar origin, pc
 
 include "ASM/initialize.asm"
@@ -40,3 +41,6 @@ include "ASM/timed_stock.asm"
 include "ASM/title_screen_timeouts.asm"
 include "ASM/unlock_everything.asm"
 include "ASM/volume_fix.asm"
+
+pullvar pc, origin
+constant DmaEnd(origin())
