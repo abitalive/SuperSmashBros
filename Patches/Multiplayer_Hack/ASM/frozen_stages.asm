@@ -259,12 +259,10 @@ dw 0x00000004, 0x8010A3B4, 0x00000000 // Hyrule Castle tornado
 dw 0x00000006, 0x80105BE8, 0x00000000 // Dream Land wind
 dw 0x00000007, 0x8010AF48, 0x8010B108 // Saffron City Pokemon
 dw 0x00000008, 0x80109888, 0x00000000 // Mushroom Kingdom POW blocks
-align(4)
 
 // Object functions table
 ObjectFunctionsTable:
 dw 0x00000002, 0x80109E84 // Congo Jungle barrel
 dw 0x00000008, 0x80109774 // Mushroom Kingdom Piranha Plants
-align(4)
 
 pushvar origin, pc

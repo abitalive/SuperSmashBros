@@ -291,9 +291,9 @@ dw 0x80159AD0, LogoSsb; float32 1, 20 // Logo (pointer, image, x, y)
 dw 0x8015C428, TextFinalDestination // Text (pointer, image)
 dw 0x80163E30, IconFinalDestination // Icon (pointer, image)
 StageTableEnd:
-align(4)
 
 // Images
+align(8)
 insert LogoSsb, "../Images/ssb_logo.ia"
 insert TextMetaCrystal, "../Images/meta_crystal_text.ia"
 insert TextBattlefield, "../Images/battlefield_text.ia"
@@ -301,6 +301,5 @@ insert TextFinalDestination, "../Images/final_destination_text.ia"
 insert IconMetaCrystal, "../Images/meta_crystal_icon.rgba" // [Jorgasms]
 insert IconBattlefield, "../Images/battlefield_icon.rgba" // [Jorgasms]
 insert IconFinalDestination, "../Images/final_destination_icon.rgba" // [Jorgasms]
-align(4)
 
 pushvar origin, pc
